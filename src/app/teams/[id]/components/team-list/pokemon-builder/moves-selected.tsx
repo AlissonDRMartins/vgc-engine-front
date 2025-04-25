@@ -54,7 +54,7 @@ export const MovesSelected = ({
               role="combobox"
               className="w-72 justify-between"
             >
-              {formatMoveName(pokemonSelected?.moves[index] || "Select move")}
+              {formatApiName(pokemonSelected?.moves[index] || "Select move")}
               <ChevronsUpDown className="opacity-50" />
             </Button>
           </PopoverTrigger>
@@ -70,7 +70,7 @@ export const MovesSelected = ({
                       value={move}
                       onSelect={() => handleMoveSelect(index, move)}
                     >
-                      <span>{formatMoveName(move)}</span>
+                      <span>{formatApiName(move)}</span>
                     </CommandItem>
                   ))}
                 </CommandGroup>
@@ -83,7 +83,7 @@ export const MovesSelected = ({
   );
 };
 
-function formatMoveName(move: string) {
+export function formatApiName(move: string) {
   return move
     .split("-")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))

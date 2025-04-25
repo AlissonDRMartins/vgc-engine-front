@@ -22,7 +22,6 @@ export const PokemonBuilder = ({
   const [pokedata, setPokedata] = useState<PokemonInfoApi | null>(null);
   const [carouselApi, setCarouselApi] = useState<CarouselApi>();
   const [currentIndex, setCurrentIndex] = useState(0);
-  console.log("currentIndex: ", currentIndex);
 
   useEffect(() => {
     const fetchPokemonData = async () => {
@@ -67,17 +66,24 @@ export const PokemonBuilder = ({
                 currentIndex={currentIndex}
                 setCarouselApi={setCarouselApi}
               >
-                <MovesSelected
-                  pokedata={pokedata}
-                  pokemonSelected={pokemonSelected}
-                  updateMember={updateMember}
-                />
+                <div className="w-full flex justify-center">
+                  <MovesSelected
+                    pokedata={pokedata}
+                    pokemonSelected={pokemonSelected}
+                    updateMember={updateMember}
+                  />
+                </div>
               </MenuOptions>
               <span>test</span>
             </div>
           </div>
 
-          <div className="absolute top-0 w-full h-[330px] md:h-[50vw] rotate-[0deg] md:rotate-[70deg] md:-left-[40%] md:-top-[20px] bg-red-900 dark:bg-red-500/30 z-0" />
+          <div
+            className="absolute w-[150%] md:w-[55%] h-[395px] md:h-[320px] left-0 top-0 bg-red-900 dark:bg-red-500/30 z-0"
+            style={{
+              clipPath: "polygon(0 0, calc(100% - 130px) 0, 100% 100%, 0 100%)",
+            }}
+          />
         </motion.div>
       )}
     </AnimatePresence>

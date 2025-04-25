@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 
-import { GengarLoading } from "@/components/loadings/gengar-loading";
+import { DarumakaLoading } from "@/components/loadings/darumaka-loading";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useEffect, useState } from "react";
 import { PokeService } from "@/services/poke";
@@ -26,7 +26,7 @@ export function TeamClient({ teamId }: { teamId: string }) {
     fetchPokemonList();
   }, []);
 
-  if (!team) return <GengarLoading />;
+  if (!team) return <DarumakaLoading />;
 
   return (
     <div className="p-4">
