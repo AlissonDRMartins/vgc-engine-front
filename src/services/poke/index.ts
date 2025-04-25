@@ -1,5 +1,5 @@
 import { apiPoke } from "@/lib/ky";
-import { PokemonAbility, PokemonType } from "@/types/pokemon";
+import { PokemonAbility, PokemonInfoApi } from "@/types/poke-api";
 
 export const PokeService = {
   getPokemonList: async (offset: number, limit: number) => {
@@ -20,7 +20,7 @@ export const PokeService = {
     if (!response.ok) {
       throw new Error("Failed to fetch Pokemon data");
     }
-    return response.json<PokemonType>();
+    return response.json<PokemonInfoApi>();
   },
 
   getAbility: async (name: string) => {

@@ -21,14 +21,14 @@ import { PokeService } from "@/services/poke";
 import { useState } from "react";
 
 interface AddPokemonProps {
-  updateTeam: (updater: (prev: Team) => Team) => void;
+  addMember: (pokemon: PokemonInfo) => void;
   pokemonList: string[];
   team?: Team;
 }
 
 export const AddPokemon = ({
+  addMember,
   pokemonList,
-  updateTeam,
   team,
 }: AddPokemonProps) => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
@@ -44,12 +44,10 @@ export const AddPokemon = ({
       sprite: pokeInfo.sprites.other.showdown.front_default
         ? pokeInfo.sprites.other.showdown.front_default
         : pokeInfo.sprites.other["official-artwork"].front_default,
+      indexTeam: team?.members.length ?? 0,
     };
 
-    updateTeam((prev) => ({
-      ...prev,
-      members: [...prev.members, selectedPokemon],
-    }));
+    addMember(selectedPokemon);
 
     setIsPopoverOpen(false);
   };

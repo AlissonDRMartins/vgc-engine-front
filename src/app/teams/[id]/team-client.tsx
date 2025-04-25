@@ -15,7 +15,7 @@ import { TeamList } from "./components/team-list";
 export function TeamClient({ teamId }: { teamId: string }) {
   const [pokemonList, setPokemonList] = useState<string[]>([]);
 
-  const { team, updateTeam } = useTeamStorage(teamId);
+  const { team, updateTeam, addMember, updateMember } = useTeamStorage(teamId);
 
   useEffect(() => {
     const fetchPokemonList = async () => {
@@ -35,8 +35,9 @@ export function TeamClient({ teamId }: { teamId: string }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0, transition: { delay: 0.1 } }}
         exit={{ opacity: 0, y: 20 }}
+        className="flex justify-center"
       >
-        <Card className="w-full h-[calc(100vh-9rem)]">
+        <Card className="w-full min-h-[calc(100vh-9rem)] max-w-[1500px]">
           <CardHeader>
             <CardTitle className="gap-2 flex flex-col">
               <TeamName teamName={team.name} updateTeam={updateTeam} />
@@ -45,10 +46,10 @@ export function TeamClient({ teamId }: { teamId: string }) {
           <CardContent>
             <AddPokemon
               pokemonList={pokemonList}
-              updateTeam={updateTeam}
+              addMember={addMember}
               team={team}
             />
-            <TeamList team={team} />
+            <TeamList team={team} updateMember={updateMember} />
           </CardContent>
         </Card>
       </motion.div>
