@@ -1,14 +1,18 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Delius, Megrim } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "@/providers/theme-provider";
+import { ModeToggle } from "@/components/mode-toggle";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const megrim = Megrim({
+  variable: "--font-megrim",
+  weight: "400",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const delius = Delius({
+  variable: "--font-delius",
+  weight: "400",
   subsets: ["latin"],
 });
 
@@ -23,11 +27,27 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${delius.className} antialiased`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <div className="w-full flex justify-between p-2 bg-gradient-to-b from-[#bbbbbb] dark:from-[#1d1d4d] to-transparent">
+            <span
+              className={`text-red-500 dark:text-red-600 font-bold text-3xl ${megrim.className}`}
+            >
+              Catchem
+              <span className="text-stone-700 dark:text-white font-bold text-3xl">
+                All
+              </span>
+            </span>
+            <ModeToggle />
+          </div>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
