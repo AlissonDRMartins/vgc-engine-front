@@ -17,17 +17,17 @@ import { PokemonInfo } from "@/types/pokemon";
 import { formatApiName } from "@/utils/format";
 import { ChevronsUpDown } from "lucide-react";
 
-interface MovesSelectedProps {
+interface MovesSelectedBackupProps {
   pokedata: PokemonInfoApi | null;
   pokemonSelected: PokemonInfo | null;
   updateMember: (index: number, pokemon: PokemonInfo) => void;
 }
 
-export const MovesSelected = ({
+export const MovesSelectedBackup = ({
   pokedata,
   updateMember,
   pokemonSelected,
-}: MovesSelectedProps) => {
+}: MovesSelectedBackupProps) => {
   const moves =
     pokedata?.moves
       .slice()

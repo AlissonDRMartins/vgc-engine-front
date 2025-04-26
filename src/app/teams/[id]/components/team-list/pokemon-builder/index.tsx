@@ -5,11 +5,11 @@ import { PokemonInfo } from "@/types/pokemon";
 import { useEffect, useState } from "react";
 import { PokeService } from "@/services/poke";
 import { PokemonInfoApi } from "@/types/poke-api";
-import { MovesSelected } from "./moves-selected";
 import { PokemonFrame } from "./pokemon-frame";
 import { CarouselApi } from "@/components/ui/carousel";
 import { MenuOptions } from "./menu-options";
 import { MoveList } from "./menu-options/move-list";
+import { MovesSelected } from "./menu-options/move-list/move-selected";
 
 interface PokemonBuilderProps {
   pokemonSelected: PokemonInfo | null;
@@ -68,14 +68,14 @@ export const PokemonBuilder = ({
                 setCarouselApi={setCarouselApi}
               >
                 <div className="w-full flex justify-center my-3 md:my-0">
-                  <MovesSelected
-                    pokedata={pokedata}
-                    pokemonSelected={pokemonSelected}
-                    updateMember={updateMember}
-                  />
+                  {currentIndex === 0 ? (
+                    <MovesSelected pokemonSelected={pokemonSelected} />
+                  ) : (
+                    <div></div>
+                  )}
                 </div>
               </MenuOptions>
-              <div className="my-2 md:my-6 md:mt-8 col-span-4">
+              <div className="md:mt-3 col-span-4">
                 {currentIndex === 0 ? (
                   <MoveList
                     moveList={

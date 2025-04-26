@@ -72,7 +72,7 @@ export const MenuOptions = ({
             {carouselItems[currentIndex].name}
           </span>
         </div>
-        <div>{children}</div>
+        <div className="mt-8 md:mt-0">{children}</div>
       </div>
     </div>
   );

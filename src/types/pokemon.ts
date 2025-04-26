@@ -14,7 +14,11 @@ export type PokemonInfo = {
   ability: string;
   item?: string;
   teraType?: string;
-  moves: string[];
+  moves: {
+    name: string;
+    power: number;
+    type: string;
+  }[];
   baseStats?: BaseStats;
   sprite?: string | null;
   indexTeam: number;

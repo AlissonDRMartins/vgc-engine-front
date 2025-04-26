@@ -23,6 +23,7 @@ export const PokemonDamageClasses = ({ dc }: { dc: string }) => {
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -10 }}
+                whileHover={{ scale: 1.3 }}
               >
                 <Image
                   src={damageClass[dc]}
