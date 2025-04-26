@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import {
   Tooltip,
   TooltipContent,
@@ -42,7 +43,16 @@ export const moveListColumns: ColumnDef<MovesDetail>[] = [
       );
     },
     cell: (cell) => {
-      return <span>{formatApiName(cell.row.original.name)}</span>;
+      return (
+        <motion.span
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          key={cell.row.original.name}
+        >
+          {formatApiName(cell.row.original.name)}
+        </motion.span>
+      );
     },
   },
   {
@@ -132,7 +142,14 @@ export const moveListColumns: ColumnDef<MovesDetail>[] = [
       const power = cell.row.original.power;
       return (
         <div className="w-full flex justify-center">
-          <span>{power || "-"}</span>
+          <motion.span
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            key={cell.row.original.name}
+          >
+            {power || "-"}
+          </motion.span>
         </div>
       );
     },
@@ -159,7 +176,14 @@ export const moveListColumns: ColumnDef<MovesDetail>[] = [
       const accuracy = cell.row.original.accuracy;
       return (
         <div className="w-full flex justify-center">
-          <span>{accuracy || "-"}</span>
+          <motion.span
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            key={cell.row.original.name}
+          >
+            {accuracy || "-"}
+          </motion.span>
         </div>
       );
     },
@@ -186,7 +210,14 @@ export const moveListColumns: ColumnDef<MovesDetail>[] = [
       const pp = cell.row.original.pp;
       return (
         <div className="w-full flex justify-center">
-          <span>{pp}</span>
+          <motion.span
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            key={cell.row.original.name}
+          >
+            {pp}
+          </motion.span>
         </div>
       );
     },

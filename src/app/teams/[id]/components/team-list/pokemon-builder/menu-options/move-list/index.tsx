@@ -62,7 +62,13 @@ export const MoveList = ({
 
     const loadSelectedPokemonMovesFirst = async () => {
       try {
-        setIsLoading(true);
+        const allMovesCached = moveList.every((move) =>
+          movesCache.current.has(move)
+        );
+
+        if (!allMovesCached) {
+          setIsLoading(true);
+        }
 
         const selectedMoves = await Promise.all(
           moveList.map((move) => fetchMoveDetail(move))
