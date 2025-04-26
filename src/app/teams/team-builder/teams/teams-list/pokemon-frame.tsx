@@ -1,8 +1,10 @@
 "use client";
+import { Skeleton } from "@/components/ui/skeleton";
 import { PokemonInfo, Team } from "@/types/pokemon";
 import { motion } from "framer-motion";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 interface PokemonFrameProps {
   index: number;
@@ -17,6 +19,12 @@ export const PokemonFrame = ({
   router,
   team,
 }: PokemonFrameProps) => {
+  const [imgSrc, setImgSrc] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (member) setImgSrc(`/gifs/${member.name}.gif`);
+  }, [member]);
+
   return (
     <motion.div
       key={index}
@@ -34,21 +42,26 @@ export const PokemonFrame = ({
       >
         {member && (
           <div className="relative flex flex-col gap-2 w-full h-full items-center justify-center">
-            <span className="capitalize text-sm absolute left-1/2 -translate-x-1/2 top-0 hidden md:block">
-              {member.name}
-            </span>
-            {member.sprite ? (
+            {member.sprite || imgSrc !== null || imgSrc ? (
               <Image
-                src={member.sprite}
+                src={imgSrc || "/placeholder.png"}
                 width={100}
                 height={100}
                 alt={member.name}
-                className="w-10 h-10 md:w-20 md:h-20 object-contain"
+                className="w-10 h-10 md:w-22 md:h-22 object-contain"
+                unoptimized
+                onError={() => {
+                  if (member.sprite) {
+                    setImgSrc(member.sprite);
+                  } else {
+                    setImgSrc("");
+                  }
+                }}
               />
             ) : (
-              <div className="w-16 h-16 bg-stone-200 dark:bg-stone-700 rounded-full flex items-center justify-center">
-                <span className="text-sm text-stone-500">No Image</span>
-              </div>
+              <Skeleton className="w-18 h-18 p-2 rounded-full flex items-center justify-center">
+                <span className="text-xs text-stone-500">No Image</span>
+              </Skeleton>
             )}
           </div>
         )}

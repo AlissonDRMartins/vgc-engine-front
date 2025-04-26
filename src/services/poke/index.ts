@@ -1,5 +1,9 @@
 import { apiPoke } from "@/lib/ky";
-import { PokemonAbility, PokemonInfoApi } from "@/types/poke-api";
+import {
+  MoveApiResponse,
+  PokemonAbility,
+  PokemonInfoApi,
+} from "@/types/poke-api";
 
 export const PokeService = {
   getPokemonList: async (offset: number, limit: number) => {
@@ -24,10 +28,16 @@ export const PokeService = {
   },
 
   getAbility: async (name: string) => {
-    const response = await apiPoke(`/ability/${name.toLowerCase()}`);
+    const response = await apiPoke(`ability/${name.toLowerCase()}`);
     if (!response.ok) {
       throw new Error("Failed to fetch Ability data");
     }
     return response.json<PokemonAbility>();
+  },
+
+  getMove: async (name: string) => {
+    const response = await apiPoke(`move/${name.toLocaleLowerCase()}`);
+    if (!response.ok) throw new Error("Failed to fetch Move data");
+    return response.json<MoveApiResponse>();
   },
 };

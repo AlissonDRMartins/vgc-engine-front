@@ -9,6 +9,7 @@ import { MovesSelected } from "./moves-selected";
 import { PokemonFrame } from "./pokemon-frame";
 import { CarouselApi } from "@/components/ui/carousel";
 import { MenuOptions } from "./menu-options";
+import { MoveList } from "./menu-options/move-list";
 
 interface PokemonBuilderProps {
   pokemonSelected: PokemonInfo | null;
@@ -66,7 +67,7 @@ export const PokemonBuilder = ({
                 currentIndex={currentIndex}
                 setCarouselApi={setCarouselApi}
               >
-                <div className="w-full flex justify-center">
+                <div className="w-full flex justify-center my-3 md:my-0">
                   <MovesSelected
                     pokedata={pokedata}
                     pokemonSelected={pokemonSelected}
@@ -74,12 +75,22 @@ export const PokemonBuilder = ({
                   />
                 </div>
               </MenuOptions>
-              <span>test</span>
+              <div className="my-2 md:my-6 md:mt-8 col-span-4">
+                {currentIndex === 0 ? (
+                  <MoveList
+                    moveList={
+                      pokedata?.moves.map((moves) => moves.move.name) || []
+                    }
+                  />
+                ) : (
+                  <div></div>
+                )}
+              </div>
             </div>
           </div>
 
           <div
-            className="absolute w-[150%] md:w-[55%] h-[395px] md:h-[320px] left-0 top-0 bg-red-900 dark:bg-red-500/30 z-0"
+            className="absolute w-[150%] md:w-[55%] h-[370px] md:h-[320px] left-0 top-0 bg-red-900 dark:bg-red-500/30 z-0"
             style={{
               clipPath: "polygon(0 0, calc(100% - 130px) 0, 100% 100%, 0 100%)",
             }}

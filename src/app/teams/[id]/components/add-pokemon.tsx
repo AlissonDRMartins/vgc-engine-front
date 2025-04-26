@@ -18,22 +18,43 @@ import {
 } from "@/components/ui/command";
 import { PokemonInfo, Team } from "@/types/pokemon";
 import { PokeService } from "@/services/poke";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
+import { toast } from "sonner";
 
 interface AddPokemonProps {
   addMember: (pokemon: PokemonInfo) => void;
   pokemonList: string[];
-  team?: Team;
+  team: Team;
+  isLoading?: boolean;
+  setIsLoading: Dispatch<SetStateAction<boolean>>;
 }
 
 export const AddPokemon = ({
   addMember,
   pokemonList,
   team,
+  isLoading,
+  setIsLoading,
 }: AddPokemonProps) => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   const handleAddPokemon = async (pokemonName: string) => {
+    if (!team) return;
+
+    const alreadyExists = team.members.some(
+      (member) => member.name.toLowerCase() === pokemonName.toLowerCase()
+    );
+
+    if (alreadyExists) {
+      toast.warning("Pokemon already added to the team", {
+        richColors: true,
+        description: "Your team must contain 6 distinct pokemons",
+      });
+      return;
+    }
+
+    setIsLoading(true);
+
     const pokeInfo = await PokeService.getPokemon(pokemonName.toLowerCase());
 
     const selectedPokemon: PokemonInfo = {
@@ -41,15 +62,14 @@ export const AddPokemon = ({
       types: pokeInfo.types.map((type) => type.type.name),
       ability: "",
       moves: [],
-      sprite: pokeInfo.sprites.other.showdown.front_default
-        ? pokeInfo.sprites.other.showdown.front_default
-        : pokeInfo.sprites.other["official-artwork"].front_default,
-      indexTeam: team?.members.length ?? 0,
+      sprite: pokeInfo.sprites.other["official-artwork"].front_default,
+      indexTeam: team.members.length,
     };
 
     addMember(selectedPokemon);
 
     setIsPopoverOpen(false);
+    setIsLoading(false);
   };
 
   return (
@@ -59,8 +79,12 @@ export const AddPokemon = ({
       exit={{ opacity: 0, x: 20 }}
     >
       <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
-        <PopoverTrigger asChild disabled={(team?.members?.length ?? 0) >= 6}>
-          <Button variant="outline" className="justify-start">
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            className="justify-start"
+            disabled={isLoading || (team?.members?.length ?? 0) >= 6}
+          >
             <PlusCircle />
             <span>Add Pokemon</span>
           </Button>

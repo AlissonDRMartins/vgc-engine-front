@@ -25,3 +25,17 @@ export type Team = {
   name: string;
   members: PokemonInfo[];
 };
+
+export type MovesDetail = {
+  accuracy: number;
+  damage_class: string;
+  effect_chance: number;
+  effect_entries: string;
+  id: number;
+  name: string;
+  power: number;
+  pp: number;
+  priority: number;
+  target: string;
+  type: string;
+};

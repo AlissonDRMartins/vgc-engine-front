@@ -8,6 +8,7 @@ export const DarumakaLoading = () => {
         alt="Loading"
         width={200}
         height={200}
+        unoptimized
         className="object-contain"
       />
       <span className="text-2xl font-bold">Loading...</span>

@@ -19,6 +19,7 @@ import poison from "@/assets/images/poison.png";
 import psychic from "@/assets/images/psychic.png";
 import rock from "@/assets/images/rock.png";
 import steel from "@/assets/images/steel.png";
+import stellar from "@/assets/images/stellar.png";
 import water from "@/assets/images/water.png";
 import {
   Tooltip,
@@ -79,5 +80,6 @@ const typeIcons: { [key: string]: StaticImageData } = {
   psychic,
   rock,
   steel,
+  stellar,
   water,
 };

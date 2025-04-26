@@ -50,7 +50,7 @@ export const IconItem = ({ pokemon, pokemonSelected }: IconItemProps) => {
           <div className="[transform:rotate(-45deg)] rounded-full flex items-center justify-center absolute w-16 h-16">
             {pokemon.sprite ? (
               <Image
-                src={pokemon.sprite}
+                src={`${pokemon.sprite}`}
                 width={100}
                 height={100}
                 alt={pokemon.name}

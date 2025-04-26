@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/popover";
 import { PokemonInfoApi } from "@/types/poke-api";
 import { PokemonInfo } from "@/types/pokemon";
+import { formatApiName } from "@/utils/format";
 import { ChevronsUpDown } from "lucide-react";
 
 interface MovesSelectedProps {
@@ -82,10 +83,3 @@ export const MovesSelected = ({
     </div>
   );
 };
-
-export function formatApiName(move: string) {
-  return move
-    .split("-")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-}

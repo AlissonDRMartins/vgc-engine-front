@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { Team } from "@/types/pokemon";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { ContextMenu, ContextMenuTrigger } from "@/components/ui/context-menu";
-import { SnorlaxLoading } from "@/components/loadings/snorlax-loading";
+import { MrMimeLoading } from "@/components/loadings/mi-mime-loading";
 import { AddTeam } from "./add-pokemon";
 import { TeamsContext } from "./teams-context";
 import { PokemonFrame } from "./pokemon-frame";
@@ -45,7 +45,7 @@ export const TeamsList = () => {
             transition={{ duration: 0.2 }}
             className="p-4 flex justify-center w-full md:justify-start"
           >
-            <SnorlaxLoading />
+            <MrMimeLoading />
           </motion.div>
         ) : (
           <div className="flex flex-col gap-4">

@@ -5,15 +5,33 @@ import { motion } from "framer-motion";
 import { PokemonInfo, Team } from "@/types/pokemon";
 import { IconItem } from "./icon-item";
 import { useEffect, useState } from "react";
-import { PokemonTypeItem } from "./type";
+import { PokemonTypeItem } from "../../../../../components/pokemon/type";
 import { PokemonBuilder } from "./pokemon-builder";
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from "@/components/ui/context-menu";
+import { Trash2 } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { formatApiName } from "@/utils/format";
 
 interface TeamListProps {
   team: Team;
   updateMember: (index: number, pokemon: PokemonInfo) => void;
+  removeMember: (index: number) => void;
+  getMember: (index: number) => PokemonInfo | undefined;
+  isLoading?: boolean;
 }
 
-export const TeamList = ({ team, updateMember }: TeamListProps) => {
+export const TeamList = ({
+  team,
+  updateMember,
+  removeMember,
+  getMember,
+  isLoading,
+}: TeamListProps) => {
   const [pokemonSelected, setPokemonSelected] = useState<PokemonInfo | null>(
     team.members[0] || null
   );
@@ -22,6 +40,16 @@ export const TeamList = ({ team, updateMember }: TeamListProps) => {
     setPokemonSelected(team.members[0] || null);
   }, [team.members]);
 
+  const handleDeletePokemon = (index: number) => {
+    removeMember(index);
+    const firstPokemons = getMember(0);
+    if (firstPokemons) {
+      setPokemonSelected(firstPokemons);
+    } else {
+      setPokemonSelected(null);
+    }
+  };
+
   return (
     <div className="grid grid-cols-4">
       <div className="col-span-4 md:col-span-1 flex flex-col gap-3 my-4">
@@ -29,31 +57,49 @@ export const TeamList = ({ team, updateMember }: TeamListProps) => {
           const isSelected = pokemon.name === pokemonSelected?.name;
 
           return (
-            <motion.div
-              key={index}
-              layout
-              initial={listItemMotion.initial}
-              animate={listItemMotion.animate(index)}
-              exit={listItemMotion.exit}
-            >
-              <motion.div
-                {...hoverMotion}
-                onClick={() => setPokemonSelected(pokemon)}
-                className={`flex items-center cursor-pointer rounded-full shadow-lg bg-stone-300 hover:bg-stone-400 dark:bg-stone-600 dark:hover:bg-stone-700 ${
-                  isSelected ? "bg-stone-400 dark:bg-stone-700 gap-4" : "gap-2"
-                }`}
-              >
-                <IconItem pokemon={pokemon} pokemonSelected={pokemonSelected} />
-                <PokemonInfoDisplay
-                  pokemon={pokemon}
-                  isSelected={pokemon.name === pokemonSelected?.name}
-                />
-              </motion.div>
-            </motion.div>
+            <ContextMenu key={index}>
+              <ContextMenuTrigger asChild>
+                <motion.div
+                  layout
+                  initial={listItemMotion.initial}
+                  animate={listItemMotion.animate(index)}
+                  exit={listItemMotion.exit}
+                >
+                  <motion.div
+                    {...hoverMotion}
+                    onClick={() => setPokemonSelected(pokemon)}
+                    className={`flex items-center cursor-pointer rounded-full shadow-lg bg-stone-300 hover:bg-stone-400 dark:bg-stone-600 dark:hover:bg-stone-700 ${
+                      isSelected
+                        ? "bg-stone-400 dark:bg-stone-700 gap-4"
+                        : "gap-2"
+                    }`}
+                  >
+                    <IconItem
+                      pokemon={pokemon}
+                      pokemonSelected={pokemonSelected}
+                    />
+                    <PokemonInfoDisplay
+                      pokemon={pokemon}
+                      isSelected={pokemon.name === pokemonSelected?.name}
+                    />
+                  </motion.div>
+                </motion.div>
+              </ContextMenuTrigger>
+              <ContextMenuContent className="w-64">
+                <ContextMenuItem
+                  className="hover:!bg-red-500 hover:!text-white group"
+                  onSelect={() => handleDeletePokemon(index)}
+                >
+                  <Trash2 className="text-black dark:text-white group-hover:text-white" />
+                  <span>Delete {formatApiName(pokemon.name)}</span>
+                </ContextMenuItem>
+              </ContextMenuContent>
+            </ContextMenu>
           );
         })}
+        {isLoading && <Skeleton className="rounded-full w-full h-10" />}
       </div>
-      <div className="col-span-4 md:col-span-3 flex items-center justify-center p-4">
+      <div className="col-span-4 md:col-span-3 flex items-center justify-center py-4 md:p-4">
         <PokemonBuilder
           updateMember={updateMember}
           pokemonSelected={pokemonSelected}

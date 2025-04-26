@@ -7,7 +7,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Dispatch, ReactNode, SetStateAction } from "react";
-import { carouselItems } from "./carousel-items";
+import { carouselItems } from "../carousel-items";
 import {
   Tooltip,
   TooltipContent,

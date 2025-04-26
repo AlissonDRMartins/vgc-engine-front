@@ -1,8 +1,8 @@
 import { PokemonInfoApi } from "@/types/poke-api";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { PokemonTypeItem } from "../type";
-import { formatApiName } from "./moves-selected";
+import { PokemonTypeItem } from "../../../../../../components/pokemon/type";
+import { formatApiName } from "@/utils/format";
 
 interface PokemonFrameProps {
   pokedata: PokemonInfoApi | null;
@@ -14,8 +14,6 @@ export const PokemonFrame = ({ pokedata }: PokemonFrameProps) => {
     pokedata?.sprites.front_default;
   const types: string[] = pokedata?.types.map((type) => type.type.name) || [];
   const name = pokedata?.name ?? "Not found";
-
-  console.log("name: ", name);
 
   return (
     <div className="flex flex-col gap-4 col-span-4 md:col-span-2 my-4">
@@ -52,7 +50,8 @@ export const PokemonFrame = ({ pokedata }: PokemonFrameProps) => {
               width={240}
               height={240}
               alt={formatApiName(name)}
-              className="h-full object-contain"
+              unoptimized
+              className="w-52 h-52 object-contain"
             />
           </motion.div>
         ) : (

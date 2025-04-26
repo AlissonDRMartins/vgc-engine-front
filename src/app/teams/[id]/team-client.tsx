@@ -13,9 +13,11 @@ import { useTeamStorage } from "./components/useTeamStorage";
 import { TeamList } from "./components/team-list";
 
 export function TeamClient({ teamId }: { teamId: string }) {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [pokemonList, setPokemonList] = useState<string[]>([]);
 
-  const { team, updateTeam, addMember, updateMember } = useTeamStorage(teamId);
+  const { team, updateTeam, addMember, updateMember, removeMember, getMember } =
+    useTeamStorage(teamId);
 
   useEffect(() => {
     const fetchPokemonList = async () => {
@@ -48,8 +50,16 @@ export function TeamClient({ teamId }: { teamId: string }) {
               pokemonList={pokemonList}
               addMember={addMember}
               team={team}
+              isLoading={isLoading}
+              setIsLoading={setIsLoading}
             />
-            <TeamList team={team} updateMember={updateMember} />
+            <TeamList
+              team={team}
+              isLoading={isLoading}
+              updateMember={updateMember}
+              removeMember={removeMember}
+              getMember={getMember}
+            />
           </CardContent>
         </Card>
       </motion.div>

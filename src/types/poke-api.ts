@@ -2,7 +2,7 @@ export interface PokemonInfoApi {
   abilities: PokemonAbility[];
   base_experience: number;
   cries: { latest: string; legacy: string };
-  forms: PokemonForms[];
+  forms: nameUrl[];
   game_indices: PokemonGameIndex[];
   height: number;
   held_items: PokemonHeldItems[];
@@ -14,72 +14,40 @@ export interface PokemonInfoApi {
   order: number;
   past_abilities: {
     abilities: PokemonAbility[];
-    generation: {
-      name: string;
-      url: string;
-    };
+    generation: nameUrl;
   }[];
   past_types: [];
-  species: {
-    name: string;
-    url: string;
-  };
+  species: nameUrl;
   sprites: PokemonSprites;
   stats: Stats[];
   types: PokemonTypes[];
 }
 
 export interface PokemonAbility {
-  ability: {
-    name: string;
-    url: string;
-  };
+  ability: nameUrl;
   is_hidden: boolean;
   slot: number;
 }
 
-export interface PokemonForms {
-  name: string;
-  url: string;
-}
-
 export interface PokemonGameIndex {
   game_index: number;
-  version: {
-    name: string;
-    url: string;
-  };
+  version: nameUrl;
 }
 
 export interface PokemonHeldItems {
-  item: {
-    name: string;
-    url: string;
-  };
+  item: nameUrl;
   version_details: {
     rarity: number;
-    version: {
-      name: string;
-      url: string;
-    };
+    version: nameUrl;
   }[];
 }
 
 export interface PokemonMoves {
-  move: {
-    name: string;
-    url: string;
-  };
+  move: nameUrl;
   version_group_details: {
     level_learned_at: number;
-    move_learn_method: {
-      name: string;
-      url: string;
-    };
-    version_group: {
-      name: string;
-      url: string;
-    };
+    move_learn_method: nameUrl;
+    version_group: nameUrl;
   }[];
 }
 
@@ -128,16 +96,80 @@ export interface PokemonSprites {
 export interface Stats {
   base_stat: number;
   effort: number;
-  stat: {
-    name: string;
-    url: string;
-  };
+  stat: nameUrl;
 }
 
 export interface PokemonTypes {
   slot: number;
-  type: {
-    name: string;
-    url: string;
+  type: nameUrl;
+}
+
+export interface MoveApiResponse {
+  accuracy: number;
+  contest_combos: ContestCombos;
+  contest_effect: { url: string };
+  contest_type: nameUrl;
+  damage_class: nameUrl;
+  effect_chance: number;
+  effect_change: [];
+  effect_entries: {
+    effect: string;
+    language: nameUrl;
+    short_effect: string;
+  }[];
+  flavor_text_entries: {
+    flavor_text: string;
+    language: nameUrl;
+    version_group: nameUrl;
+  }[];
+  generation: nameUrl;
+  id: number;
+  learned_by_pokemon: nameUrl[];
+  machines: {
+    machine: { url: string };
+    version_group: nameUrl;
+  }[];
+  meta: {
+    ailment: nameUrl;
+    ailment_chance: number;
+    category: nameUrl;
+    crit_rate: number;
+    drain: number;
+    flinch_chance: number;
+    healing: number;
+    max_hits: number | null;
+    max_turns: number | null;
+    min_hits: number | null;
+    min_turns: number | null;
+    stat_chance: number;
   };
+  name: string;
+  names: {
+    language: nameUrl;
+    name: string;
+  }[];
+  past_values: [];
+  power: number;
+  pp: number;
+  priority: number;
+  stat_change: [];
+  super_contest_effect: { url: string };
+  target: nameUrl;
+  type: nameUrl;
+}
+
+export interface ContestCombos {
+  normal: {
+    use_after: nameUrl[] | null;
+    use_before: nameUrl[] | null;
+  };
+  super: {
+    use_after: nameUrl[] | null;
+    use_before: nameUrl[] | null;
+  };
+}
+
+export interface nameUrl {
+  name: string;
+  url: string;
 }
