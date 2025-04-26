@@ -2,57 +2,86 @@
 
 import { PokeService } from "@/services/poke";
 import { MovesDetail } from "@/types/pokemon";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MoveDataTable } from "./data-table";
 import { moveListColumns } from "./columns";
 
 interface MoveListProps {
   moveList: string[];
+  teamMoveLists: string[][];
+  selectedPokemonIndex: number;
 }
 
-export const MoveList = ({ moveList }: MoveListProps) => {
+export const MoveList = ({
+  moveList,
+  teamMoveLists,
+  selectedPokemonIndex,
+}: MoveListProps) => {
   const [movesDetails, setMovesDetails] = useState<MovesDetail[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  const movesCache = useRef<Map<string, MovesDetail>>(new Map());
+
   useEffect(() => {
-    const fetchMoves = async () => {
+    const fetchMoveDetail = async (moveName: string) => {
+      if (movesCache.current.has(moveName))
+        return movesCache.current.get(moveName)!;
+
+      const moveResponse = await PokeService.getMove(moveName);
+      const {
+        accuracy,
+        damage_class,
+        effect_chance,
+        effect_entries,
+        id,
+        name,
+        power,
+        pp,
+        priority,
+        target,
+        type,
+      } = moveResponse;
+
+      const moveDetail: MovesDetail = {
+        accuracy,
+        damage_class: damage_class.name,
+        effect_chance,
+        effect_entries: effect_entries[0]?.effect || "",
+        id,
+        name,
+        power,
+        pp,
+        priority,
+        target: target.name,
+        type: type.name,
+      };
+
+      movesCache.current.set(name, moveDetail);
+      return moveDetail;
+    };
+
+    const loadSelectedPokemonMovesFirst = async () => {
       try {
         setIsLoading(true);
-        const moves = await Promise.all(
-          moveList.map(async (move) => {
-            const moveResponse = await PokeService.getMove(move);
-            const {
-              accuracy,
-              damage_class,
-              effect_chance,
-              effect_entries,
-              id,
-              name,
-              power,
-              pp,
-              priority,
-              target,
-              type,
-            } = moveResponse;
 
-            return {
-              accuracy,
-              damage_class: damage_class.name,
-              effect_chance,
-              effect_entries: effect_entries[0]?.effect || "",
-              id,
-              name,
-              power,
-              pp,
-              priority,
-              target: target.name,
-              type: type.name,
-            } as MovesDetail;
-          })
+        const selectedMoves = await Promise.all(
+          moveList.map((move) => fetchMoveDetail(move))
         );
 
-        const sortedMoves = moves.sort((a, b) => a.name.localeCompare(b.name));
-        setMovesDetails(sortedMoves);
+        const sortedSelectedMoves = selectedMoves.sort((a, b) =>
+          a.name.localeCompare(b.name)
+        );
+        setMovesDetails(sortedSelectedMoves);
+
+        const otherMoves = teamMoveLists
+          .flat()
+          .filter((move) => !movesCache.current.has(move));
+
+        await Promise.all(
+          otherMoves.map(async (move) => {
+            await fetchMoveDetail(move);
+          })
+        );
       } catch (error) {
         console.error("Failed to fetch moves:", error);
       } finally {
@@ -60,8 +89,8 @@ export const MoveList = ({ moveList }: MoveListProps) => {
       }
     };
 
-    fetchMoves();
-  }, [moveList]);
+    loadSelectedPokemonMovesFirst();
+  }, [moveList, teamMoveLists, selectedPokemonIndex]);
 
   return (
     <div className="flex flex-col gap-2 p-2 w-full">

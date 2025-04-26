@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { PokemonInfo } from "@/types/pokemon";
+import { PokemonInfo, Team } from "@/types/pokemon";
 import { useEffect, useState } from "react";
 import { PokeService } from "@/services/poke";
 import { PokemonInfoApi } from "@/types/poke-api";
@@ -12,13 +12,14 @@ import { MoveList } from "./menu-options/move-list";
 import { MovesSelected } from "./menu-options/move-list/move-selected";
 
 interface PokemonBuilderProps {
+  team: Team;
   pokemonSelected: PokemonInfo | null;
   updateMember: (index: number, pokemon: PokemonInfo) => void;
 }
 
 export const PokemonBuilder = ({
+  team,
   pokemonSelected,
-  updateMember,
 }: PokemonBuilderProps) => {
   const [pokedata, setPokedata] = useState<PokemonInfoApi | null>(null);
   const [carouselApi, setCarouselApi] = useState<CarouselApi>();
@@ -81,6 +82,12 @@ export const PokemonBuilder = ({
                     moveList={
                       pokedata?.moves.map((moves) => moves.move.name) || []
                     }
+                    teamMoveLists={team.members.map((member) =>
+                      member.moves.map((move) => move.name)
+                    )}
+                    selectedPokemonIndex={team.members.findIndex(
+                      (member) => member.indexTeam === pokemonSelected.indexTeam
+                    )}
                   />
                 ) : (
                   <div></div>

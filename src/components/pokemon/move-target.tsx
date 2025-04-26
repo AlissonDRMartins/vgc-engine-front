@@ -5,8 +5,11 @@ import Image, { StaticImageData } from "next/image";
 import allAllies from "@/assets/images/all-allies.png";
 import allOpponents from "@/assets/images/all-opponents.png";
 import allOtherPokemon from "@/assets/images/all-other-pokemon.png";
+import allPokemon from "@/assets/images/all-pokemon.png";
 import ally from "@/assets/images/ally.png";
 import entireField from "@/assets/images/entire-field.png";
+import faintingPokemon from "@/assets/images/fainting-pokemon.png";
+import opponentsField from "@/assets/images/opponents-field.png";
 import randomOpponent from "@/assets/images/random-opponent.png";
 import selectedPokemon from "@/assets/images/selected-pokemon.png";
 import specificMove from "@/assets/images/specific-move.png";
@@ -58,13 +61,17 @@ const moveTarget: { [key: string]: StaticImageData } = {
   "all-allies": allAllies,
   "all-opponents": allOpponents,
   "all-other-pokemon": allOtherPokemon,
+  "all-pokemon": allPokemon,
   ally: ally,
   "entire-field": entireField,
+  "fainting-pokemon": faintingPokemon,
+  "opponents-field": opponentsField,
   "random-opponent": randomOpponent,
   "selected-pokemon": selectedPokemon,
   "selected-pokemon-me-first": selectedPokemon,
   "specific-move": specificMove,
   user,
   "user-and-allies": userAndAllies,
+  "user-or-ally": userAndAllies,
   "users-field": usersField,
 };

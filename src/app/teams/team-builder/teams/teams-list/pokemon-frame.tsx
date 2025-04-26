@@ -1,4 +1,5 @@
 "use client";
+import { saveSelectedPokemonIndex } from "@/app/teams/[id]/components/team-list/helpers";
 import { Skeleton } from "@/components/ui/skeleton";
 import { PokemonInfo, Team } from "@/types/pokemon";
 import { motion } from "framer-motion";
@@ -37,6 +38,7 @@ export const PokemonFrame = ({
           !member ? "hidden" : "flex"
         }`}
         onClick={() => {
+          saveSelectedPokemonIndex(team.id, index);
           router.push(`/teams/${team.id}`);
         }}
       >

@@ -20,6 +20,7 @@ import { PokemonInfo, Team } from "@/types/pokemon";
 import { PokeService } from "@/services/poke";
 import { Dispatch, SetStateAction, useState } from "react";
 import { toast } from "sonner";
+import { saveSelectedPokemonIndex } from "./team-list/helpers";
 
 interface AddPokemonProps {
   addMember: (pokemon: PokemonInfo) => void;
@@ -67,6 +68,7 @@ export const AddPokemon = ({
     };
 
     addMember(selectedPokemon);
+    saveSelectedPokemonIndex(team.id, team.members.length);
 
     setIsPopoverOpen(false);
     setIsLoading(false);

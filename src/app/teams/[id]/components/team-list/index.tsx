@@ -16,6 +16,7 @@ import {
 import { Trash2 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatApiName } from "@/utils/format";
+import { getSelectedPokemonIndex, saveSelectedPokemonIndex } from "./helpers";
 
 interface TeamListProps {
   team: Team;
@@ -33,20 +34,28 @@ export const TeamList = ({
   isLoading,
 }: TeamListProps) => {
   const [pokemonSelected, setPokemonSelected] = useState<PokemonInfo | null>(
-    team.members[0] || null
+    null
   );
 
   useEffect(() => {
-    setPokemonSelected(team.members[0] || null);
-  }, [team.members]);
+    const cachedIndex = getSelectedPokemonIndex(team.id);
+    const pokemon =
+      cachedIndex !== null && team.members[cachedIndex]
+        ? team.members[cachedIndex]
+        : team.members[0] || null;
+    setPokemonSelected(pokemon);
+  }, [team]);
 
   const handleDeletePokemon = (index: number) => {
     removeMember(index);
-    const firstPokemons = getMember(0);
-    if (firstPokemons) {
-      setPokemonSelected(firstPokemons);
+
+    const firstPokemon = getMember(0);
+    if (firstPokemon) {
+      setPokemonSelected(firstPokemon);
+      saveSelectedPokemonIndex(team.id, 0);
     } else {
       setPokemonSelected(null);
+      saveSelectedPokemonIndex(team.id, -1);
     }
   };
 
@@ -67,7 +76,10 @@ export const TeamList = ({
                 >
                   <motion.div
                     {...hoverMotion}
-                    onClick={() => setPokemonSelected(pokemon)}
+                    onClick={() => {
+                      setPokemonSelected(pokemon);
+                      saveSelectedPokemonIndex(team.id, index);
+                    }}
                     className={`flex items-center cursor-pointer rounded-full shadow-lg bg-stone-300 hover:bg-stone-400 dark:bg-stone-600 dark:hover:bg-stone-700 ${
                       isSelected
                         ? "bg-stone-400 dark:bg-stone-700 gap-4"
@@ -101,6 +113,7 @@ export const TeamList = ({
       </div>
       <div className="col-span-4 md:col-span-3 flex items-center justify-center py-4 md:p-4">
         <PokemonBuilder
+          team={team}
           updateMember={updateMember}
           pokemonSelected={pokemonSelected}
         />
