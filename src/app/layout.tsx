@@ -1,21 +1,9 @@
 import type { Metadata } from "next";
-import { Delius, Megrim } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/providers/theme-provider";
-import { ModeToggle } from "@/components/mode-toggle";
 import { Toaster } from "@/components/ui/sonner";
-
-const megrim = Megrim({
-  variable: "--font-megrim",
-  weight: "400",
-  subsets: ["latin"],
-});
-
-const delius = Delius({
-  variable: "--font-delius",
-  weight: "400",
-  subsets: ["latin"],
-});
+import Header from "@/components/header";
+import { nunito } from "@/styles/fonts";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -29,24 +17,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${delius.className} antialiased`}>
+      <body className={`${nunito.className} antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          <div className="w-full flex justify-between p-2 bg-gradient-to-b from-[#bbbbbb] dark:from-[#1d1d4d] to-transparent">
-            <span
-              className={`text-red-500 dark:text-red-600 font-bold text-3xl ${megrim.className}`}
-            >
-              Catchem
-              <span className="text-stone-700 dark:text-white font-bold text-3xl">
-                All
-              </span>
-            </span>
-            <ModeToggle />
-          </div>
+          <Header />
           {children}
           <Toaster />
         </ThemeProvider>

@@ -26,6 +26,8 @@ export const PokemonFrame = ({
     if (member) setImgSrc(`/gifs/${member.name}.gif`);
   }, [member]);
 
+  const imageSource = imgSrc || "/placeholder.png";
+
   return (
     <motion.div
       key={index}
@@ -44,19 +46,21 @@ export const PokemonFrame = ({
       >
         {member && (
           <div className="relative flex flex-col gap-2 w-full h-full items-center justify-center">
-            {member.sprite || imgSrc !== null || imgSrc ? (
+            {imgSrc || member.sprite ? (
               <Image
-                src={imgSrc || "/placeholder.png"}
+                src={imageSource}
                 width={100}
                 height={100}
                 alt={member.name}
                 className="w-10 h-10 md:w-22 md:h-22 object-contain"
                 unoptimized
+                priority
+                rel="preload"
                 onError={() => {
-                  if (member.sprite) {
+                  if (imgSrc && imgSrc.includes("/gifs/") && member.sprite) {
                     setImgSrc(member.sprite);
                   } else {
-                    setImgSrc("");
+                    setImgSrc("/placeholder.png");
                   }
                 }}
               />

@@ -10,6 +10,7 @@ const nextConfig: NextConfig = {
   },
   images: {
     domains: ["pokeapi.co", "raw.githubusercontent.com"],
+    formats: ["image/webp", "image/avif"],
   },
 };
 

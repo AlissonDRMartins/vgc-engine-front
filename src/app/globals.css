@@ -76,6 +76,8 @@
   --sidebar-ring: oklch(0.709 0.01 56.259);
   --background: oklch(1 0 0);
   --foreground: oklch(0.147 0.004 49.25);
+  --font-megrim: var(--font-megrim);
+  --font-nunito: var(--font-nunito);
 }
 
 .dark {
@@ -118,5 +120,6 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-nunito), sans-serif;
   }
 }

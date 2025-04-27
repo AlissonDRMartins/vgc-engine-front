@@ -9,6 +9,8 @@ export const DarumakaLoading = () => {
         width={200}
         height={200}
         unoptimized
+        priority
+        rel="preload"
         className="object-contain"
       />
       <span className="text-2xl font-bold">Loading...</span>

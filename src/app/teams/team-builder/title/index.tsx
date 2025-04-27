@@ -13,7 +13,13 @@ export const TeamBuilderTitle = () => {
       exit={{ opacity: 0, y: 10 }}
       className="flex gap-3"
     >
-      <Image src={pokeball} height={20} width={40} alt="" />
+      <Image
+        src={pokeball}
+        height={20}
+        width={40}
+        alt="Pokeball icon"
+        priority
+      />
       <h1 className="text-4xl font-bold">Team Builder</h1>
     </motion.div>
   );

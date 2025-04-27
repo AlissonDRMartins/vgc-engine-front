@@ -6,9 +6,11 @@ export const MrMimeLoading = () => {
       <Image
         src={"/gifs/mr-mime.gif"}
         unoptimized
+        priority
         alt="Loading"
         width={200}
         height={200}
+        rel="preload"
       />
       <span className="text-2xl font-bold">Loading...</span>
     </div>

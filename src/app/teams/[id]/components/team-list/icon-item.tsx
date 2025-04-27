@@ -54,6 +54,7 @@ export const IconItem = ({ pokemon, pokemonSelected }: IconItemProps) => {
                 width={100}
                 height={100}
                 alt={pokemon.name}
+                priority
                 className="w-20 h-20 object-contain"
                 rel="preload"
               />

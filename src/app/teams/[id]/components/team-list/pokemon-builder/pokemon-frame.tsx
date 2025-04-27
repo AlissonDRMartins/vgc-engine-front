@@ -3,17 +3,29 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { PokemonTypeItem } from "../../../../../../components/pokemon/type";
 import { formatApiName } from "@/utils/format";
+import { useEffect, useState } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface PokemonFrameProps {
   pokedata: PokemonInfoApi | null;
 }
 
 export const PokemonFrame = ({ pokedata }: PokemonFrameProps) => {
+  const [imgSrc, setImgSrc] = useState<string | null>(null);
+
   const sprite =
     pokedata?.sprites.other["official-artwork"].front_default ??
     pokedata?.sprites.front_default;
   const types: string[] = pokedata?.types.map((type) => type.type.name) || [];
   const name = pokedata?.name ?? "Not found";
+
+  useEffect(() => {
+    if (name !== "Not found") {
+      setImgSrc(`/gifs/${name}.gif`);
+    }
+  }, [name]);
+
+  const imageSource = imgSrc || sprite || "/placeholder.png";
 
   return (
     <div className="flex flex-col gap-4 col-span-4 md:col-span-2 my-4">
@@ -37,28 +49,35 @@ export const PokemonFrame = ({ pokedata }: PokemonFrameProps) => {
         <PokemonTypeItem pokemonType={types} />
       </div>
       <AnimatePresence mode="wait">
-        {sprite ? (
+        {pokedata ? (
           <motion.div
-            key={sprite}
+            key={imageSource}
             initial={{ opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 5 }}
             className="w-full flex justify-center items-center"
           >
             <Image
-              src={`/gifs/${name}.gif`}
+              src={imageSource}
               width={240}
               height={240}
               alt={formatApiName(name)}
-              unoptimized
               className="w-52 h-52 object-contain"
-              rel="preload"
+              priority
+              unoptimized
+              onError={() => {
+                if (imgSrc && imgSrc.includes("/gifs/") && sprite) {
+                  setImgSrc(sprite);
+                } else {
+                  setImgSrc("/placeholder.png");
+                }
+              }}
             />
           </motion.div>
         ) : (
-          <div>
-            <span>Not found</span>
-          </div>
+          <Skeleton className="w-52 h-52 rounded-xl flex items-center justify-center">
+            <span className="text-xs text-muted-foreground">No Pokémon</span>
+          </Skeleton>
         )}
       </AnimatePresence>
     </div>
