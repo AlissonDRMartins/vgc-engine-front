@@ -55,6 +55,7 @@ export const IconItem = ({ pokemon, pokemonSelected }: IconItemProps) => {
                 height={100}
                 alt={pokemon.name}
                 className="w-20 h-20 object-contain"
+                rel="preload"
               />
             ) : (
               <div className="w-14 h-14 bg-gray-400 animate-pulse rounded-full" />

@@ -68,16 +68,24 @@ export const useTeamStorage = (teamId: string) => {
     saveTeam(updated);
   };
 
-  const updateMember = (index: number, updatedMember: PokemonInfo) => {
-    console.log("Updating member at index:", index, updatedMember);
+  const updateMember = (
+    index: number,
+    updater: (prev: PokemonInfo) => PokemonInfo
+  ) => {
     if (!team || index < 0 || index >= team.members.length) return;
+
     const updatedMembers = [...team.members];
-    updatedMembers[index] = updatedMember;
+
+    const prevMember = updatedMembers[index];
+    if (!prevMember) return;
+
+    updatedMembers[index] = updater(prevMember);
 
     const updated = {
       ...team,
       members: updatedMembers,
     };
+
     saveTeam(updated);
   };
 

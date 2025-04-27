@@ -1,21 +1,28 @@
 "use client";
 
-import { PokeService } from "@/services/poke";
-import { MovesDetail } from "@/types/pokemon";
+import { MovesDetail, PokemonInfo } from "@/types/pokemon";
 import { useEffect, useRef, useState } from "react";
 import { MoveDataTable } from "./data-table";
 import { moveListColumns } from "./columns";
+import { VgcEngineService } from "@/services/vgc-engine";
 
 interface MoveListProps {
   moveList: string[];
   teamMoveLists: string[][];
+  pokemonSelected: PokemonInfo | null;
   selectedPokemonIndex: number;
+  updateMember: (
+    index: number,
+    updater: (prev: PokemonInfo) => PokemonInfo
+  ) => void;
 }
 
 export const MoveList = ({
   moveList,
   teamMoveLists,
+  pokemonSelected,
   selectedPokemonIndex,
+  updateMember,
 }: MoveListProps) => {
   const [movesDetails, setMovesDetails] = useState<MovesDetail[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -23,71 +30,33 @@ export const MoveList = ({
   const movesCache = useRef<Map<string, MovesDetail>>(new Map());
 
   useEffect(() => {
-    const fetchMoveDetail = async (moveName: string) => {
-      if (movesCache.current.has(moveName))
-        return movesCache.current.get(moveName)!;
-
-      const moveResponse = await PokeService.getMove(moveName);
-      const {
-        accuracy,
-        damage_class,
-        effect_chance,
-        effect_entries,
-        id,
-        name,
-        power,
-        pp,
-        priority,
-        target,
-        type,
-      } = moveResponse;
-
-      const moveDetail: MovesDetail = {
-        accuracy,
-        damage_class: damage_class.name,
-        effect_chance,
-        effect_entries: effect_entries[0]?.effect || "",
-        id,
-        name,
-        power,
-        pp,
-        priority,
-        target: target.name,
-        type: type.name,
-      };
-
-      movesCache.current.set(name, moveDetail);
-      return moveDetail;
-    };
-
-    const loadSelectedPokemonMovesFirst = async () => {
+    const loadMoves = async () => {
       try {
-        const allMovesCached = moveList.every((move) =>
-          movesCache.current.has(move)
+        const uniqueMoves = Array.from(
+          new Set([...moveList, ...teamMoveLists.flat()])
         );
 
-        if (!allMovesCached) {
+        const movesToFetch = uniqueMoves.filter(
+          (move) => !movesCache.current.has(move)
+        );
+
+        if (movesToFetch.length > 0) {
           setIsLoading(true);
+          const fetchedMoves = await VgcEngineService.getMoveDetails(
+            movesToFetch
+          );
+
+          fetchedMoves.moves.forEach((moveDetail) => {
+            movesCache.current.set(moveDetail.name, moveDetail);
+          });
         }
 
-        const selectedMoves = await Promise.all(
-          moveList.map((move) => fetchMoveDetail(move))
-        );
+        const selectedMovesDetails = moveList
+          .map((move) => movesCache.current.get(move))
+          .filter((moveDetail): moveDetail is MovesDetail => !!moveDetail)
+          .sort((a, b) => a.name.localeCompare(b.name));
 
-        const sortedSelectedMoves = selectedMoves.sort((a, b) =>
-          a.name.localeCompare(b.name)
-        );
-        setMovesDetails(sortedSelectedMoves);
-
-        const otherMoves = teamMoveLists
-          .flat()
-          .filter((move) => !movesCache.current.has(move));
-
-        await Promise.all(
-          otherMoves.map(async (move) => {
-            await fetchMoveDetail(move);
-          })
-        );
+        setMovesDetails(selectedMovesDetails);
       } catch (error) {
         console.error("Failed to fetch moves:", error);
       } finally {
@@ -95,8 +64,36 @@ export const MoveList = ({
       }
     };
 
-    loadSelectedPokemonMovesFirst();
+    loadMoves();
   }, [moveList, teamMoveLists, selectedPokemonIndex]);
+
+  const handleAddMove = (move: MovesDetail) => {
+    const pokemonIndex = selectedPokemonIndex;
+    if (pokemonIndex === -1) return;
+
+    updateMember(pokemonIndex, (prevPokemon) => {
+      const moveIndex = prevPokemon.moves.findIndex(
+        (m) => m.name === move.name
+      );
+      const newMoves = [...prevPokemon.moves];
+
+      if (moveIndex !== -1) {
+        newMoves.splice(moveIndex, 1);
+      } else {
+        if (newMoves.length >= 4) newMoves.pop();
+        newMoves.push({
+          name: move.name,
+          power: move.power || 0,
+          type: move.type,
+        });
+      }
+
+      return {
+        ...prevPokemon,
+        moves: newMoves,
+      };
+    });
+  };
 
   return (
     <div className="flex flex-col gap-2 p-2 w-full">
@@ -110,7 +107,12 @@ export const MoveList = ({
           ))}
         </div>
       ) : (
-        <MoveDataTable columns={moveListColumns} data={movesDetails} />
+        <MoveDataTable
+          columns={moveListColumns}
+          data={movesDetails}
+          onRowClick={handleAddMove}
+          selectedMoves={pokemonSelected?.moves.map((m) => m.name) || []}
+        />
       )}
     </div>
   );

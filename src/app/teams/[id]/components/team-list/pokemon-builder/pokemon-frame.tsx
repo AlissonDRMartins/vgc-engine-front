@@ -52,6 +52,7 @@ export const PokemonFrame = ({ pokedata }: PokemonFrameProps) => {
               alt={formatApiName(name)}
               unoptimized
               className="w-52 h-52 object-contain"
+              rel="preload"
             />
           </motion.div>
         ) : (

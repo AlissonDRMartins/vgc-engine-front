@@ -20,7 +20,10 @@ import { getSelectedPokemonIndex, saveSelectedPokemonIndex } from "./helpers";
 
 interface TeamListProps {
   team: Team;
-  updateMember: (index: number, pokemon: PokemonInfo) => void;
+  updateMember: (
+    index: number,
+    updater: (prev: PokemonInfo) => PokemonInfo
+  ) => void;
   removeMember: (index: number) => void;
   getMember: (index: number) => PokemonInfo | undefined;
   isLoading?: boolean;

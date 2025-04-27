@@ -38,13 +38,19 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import { cn } from "@/lib/utils";
+import { MovesDetail } from "@/types/pokemon";
 
 interface DataTableProps<TData, TValue> {
+  onRowClick?: (data: TData) => void;
+  selectedMoves?: string[];
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
 
 export function MoveDataTable<TData, TValue>({
+  onRowClick,
+  selectedMoves,
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
@@ -129,6 +135,13 @@ export function MoveDataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  className={cn(
+                    "hover:bg-stone-200 dark:hover:bg-stone-900 hover:cursor-pointer",
+                    selectedMoves?.includes((row.original as MovesDetail).name)
+                      ? "bg-gradient-to-br from-stone-700 to-stone-900 dark:from-stone-400 dark:to-stone-600 text-white"
+                      : ""
+                  )}
+                  onClick={() => onRowClick?.(row.original)}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>

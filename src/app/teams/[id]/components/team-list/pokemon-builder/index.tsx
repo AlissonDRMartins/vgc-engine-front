@@ -14,12 +14,16 @@ import { MovesSelected } from "./menu-options/move-list/move-selected";
 interface PokemonBuilderProps {
   team: Team;
   pokemonSelected: PokemonInfo | null;
-  updateMember: (index: number, pokemon: PokemonInfo) => void;
+  updateMember: (
+    index: number,
+    updater: (prev: PokemonInfo) => PokemonInfo
+  ) => void;
 }
 
 export const PokemonBuilder = ({
   team,
   pokemonSelected,
+  updateMember,
 }: PokemonBuilderProps) => {
   const [pokedata, setPokedata] = useState<PokemonInfoApi | null>(null);
   const [carouselApi, setCarouselApi] = useState<CarouselApi>();
@@ -79,6 +83,8 @@ export const PokemonBuilder = ({
               <div className="md:mt-3 col-span-4">
                 {currentIndex === 0 ? (
                   <MoveList
+                    updateMember={updateMember}
+                    pokemonSelected={pokemonSelected}
                     moveList={
                       pokedata?.moves.map((moves) => moves.move.name) || []
                     }

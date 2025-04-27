@@ -248,7 +248,7 @@ export const moveListColumns: ColumnDef<MovesDetail>[] = [
           <DrawerTrigger asChild>
             <Button
               variant="ghost"
-              className="max-w-[400px] p-0 w-full flex justify-start truncate text-left hover:bg-transparent hover:text-white cursor-pointer"
+              className="max-w-[400px] p-0 w-full flex justify-start truncate text-left hover:!bg-transparent cursor-pointer"
             >
               {shortEffect}
             </Button>
