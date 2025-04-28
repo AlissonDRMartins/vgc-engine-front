@@ -29,6 +29,7 @@ import {
 
 // Importação dinâmica do Framer Motion apenas se necessário
 import dynamic from "next/dynamic";
+import { cn } from "@/lib/utils";
 const MotionDiv = dynamic(
   () => import("framer-motion").then((mod) => mod.motion.div),
   { ssr: false }
@@ -38,10 +39,12 @@ export const PokemonTypeItem = ({
   pokemonType,
   arceusIcon,
   withAnimation = false, // Nova prop padrão: false
+  className,
 }: {
   pokemonType: string[];
   arceusIcon?: boolean;
   withAnimation?: boolean;
+  className?: string | undefined;
 }) => {
   const url = (type: number) => {
     return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/types/generation-viii/sword-shield/${type}.png`;
@@ -58,12 +61,13 @@ export const PokemonTypeItem = ({
                 : typeIcons[type.toLowerCase()]
             }
             alt="Pokemon Type"
-            className={
-              arceusIcon ? "max-h-10 rounded-sm" : "w-8 h-8 object-contain"
-            }
+            className={cn(
+              arceusIcon ? "max-h-10 rounded-sm" : "w-8 h-8 object-contain",
+              className
+            )}
             width={100}
             height={100}
-            loading="lazy" // lazy para mais performance
+            loading="lazy"
           />
         );
 
@@ -85,9 +89,11 @@ export const PokemonTypeItem = ({
                   <div>{IconContent}</div>
                 )}
               </TooltipTrigger>
-              <TooltipContent>
-                <span className="capitalize">{type}</span>
-              </TooltipContent>
+              {!arceusIcon && (
+                <TooltipContent>
+                  <span className="capitalize">{type}</span>
+                </TooltipContent>
+              )}
             </Tooltip>
           </TooltipProvider>
         );

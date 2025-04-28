@@ -27,7 +27,6 @@ import {
   ChevronRight,
   ChevronsLeft,
   ChevronsRight,
-  Search,
 } from "lucide-react";
 import {
   Select,
@@ -36,10 +35,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { MovesDetail } from "@/types/pokemon";
+import { TableFilters } from "./filters";
 
 interface DataTableProps<TData, TValue> {
   onRowClick?: (data: TData) => void;
@@ -90,25 +89,7 @@ export function MoveDataTable({
 
   return (
     <div className="flex flex-col">
-      <div className="flex items-center py-4">
-        <div className="relative w-full max-w-sm">
-          <Input
-            value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-            onChange={(event) =>
-              table.getColumn("name")?.setFilterValue(event.target.value)
-            }
-            className="w-full"
-          />
-          {!(table.getColumn("name")?.getFilterValue() as string) && (
-            <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none text-muted-foreground">
-              <span className="flex gap-2 text-sm items-center">
-                <Search className="w-5 h-5" />
-                Filter name...
-              </span>{" "}
-            </div>
-          )}
-        </div>
-      </div>
+      <TableFilters table={table} />
       <div className="rounded-md border flex flex-col gap-2">
         <Table className="rounded-md">
           <TableHeader className="bg-red-900 dark:bg-red-500/30 rounded-md">

@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/tooltip";
 import { formatApiName } from "@/utils/format";
 import dynamic from "next/dynamic";
+import { cn } from "@/lib/utils";
 
 const MotionDiv = dynamic(
   () => import("framer-motion").then((mod) => mod.motion.div),
@@ -33,9 +34,11 @@ const MotionDiv = dynamic(
 export const PokemonMoveTarget = ({
   target,
   withAnimation = false,
+  className,
 }: {
   target: string;
   withAnimation?: boolean;
+  className?: string | undefined;
 }) => {
   return (
     <div className="flex items-center justify-center w-[38px] -mx-[2px]">
@@ -52,7 +55,7 @@ export const PokemonMoveTarget = ({
                 <Image
                   src={moveTarget[target]}
                   alt={target}
-                  className="w-10 h-10 object-contain"
+                  className={cn("w-10 h-10 object-contain", className)}
                   width={192}
                   height={192}
                   loading="lazy"
@@ -63,7 +66,7 @@ export const PokemonMoveTarget = ({
                 <Image
                   src={moveTarget[target]}
                   alt={target}
-                  className="w-10 h-10 object-contain"
+                  className={cn("w-10 h-10 object-contain", className)}
                   width={192}
                   height={192}
                   loading="lazy"

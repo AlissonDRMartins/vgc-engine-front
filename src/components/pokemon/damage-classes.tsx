@@ -11,6 +11,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import dynamic from "next/dynamic";
+import { cn } from "@/lib/utils";
 
 const MotionDiv = dynamic(
   () => import("framer-motion").then((mod) => mod.motion.div),
@@ -20,9 +21,11 @@ const MotionDiv = dynamic(
 export const PokemonDamageClasses = ({
   dc,
   withAnimation = false,
+  className,
 }: {
   dc: string;
   withAnimation?: boolean;
+  className?: string | undefined;
 }) => {
   return (
     <div className="flex items-center justify-center w-[36px]">
@@ -39,7 +42,7 @@ export const PokemonDamageClasses = ({
                 <Image
                   src={damageClass[dc]}
                   alt={dc}
-                  className="w-10 h-10 object-contain"
+                  className={cn("w-10 h-10 object-contain", className)}
                   width={192}
                   height={192}
                   loading="lazy"
@@ -50,7 +53,7 @@ export const PokemonDamageClasses = ({
                 <Image
                   src={damageClass[dc]}
                   alt={dc}
-                  className="w-10 h-10 object-contain"
+                  className={cn("w-10 h-10 object-contain", className)}
                   width={192}
                   height={192}
                   loading="lazy"
