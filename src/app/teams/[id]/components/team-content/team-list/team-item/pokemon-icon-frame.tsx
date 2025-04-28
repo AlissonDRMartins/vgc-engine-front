@@ -5,12 +5,15 @@ import { motion } from "framer-motion";
 import { PokemonInfo } from "@/types/pokemon";
 import Image from "next/image";
 
-interface IconItemProps {
+interface PokemonIconFrameProps {
   pokemon: PokemonInfo;
   pokemonSelected?: PokemonInfo | null;
 }
 
-export const IconItem = ({ pokemon, pokemonSelected }: IconItemProps) => {
+export const PokemonIconFrame = ({
+  pokemon,
+  pokemonSelected,
+}: PokemonIconFrameProps) => {
   const isSelected = pokemonSelected?.name === pokemon.name;
 
   return (
@@ -29,16 +32,16 @@ export const IconItem = ({ pokemon, pokemonSelected }: IconItemProps) => {
         isSelected ? "w-20 h-20" : "w-10 h-10"
       } rounded-full overflow-hidden shadow-lg border-[1px] border-black`}
     >
-      {/* Parte de cima - Vermelha */}
+      {/* Red */}
       <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-r from-red-600 to-red-800 border-b-[2px] border-black" />
 
-      {/* Parte de baixo - Branca */}
+      {/* White */}
       <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-r from-white to-gray-400" />
 
-      {/* Linha preta do meio */}
+      {/* Black line in middle */}
       <div className="absolute top-1/2 left-0 -translate-y-1/2 w-full h-[1px] bg-black z-10" />
 
-      {/* Botão central */}
+      {/* Central button */}
       <div
         className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex items-center justify-center rounded-full ${
           isSelected

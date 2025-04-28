@@ -1,31 +1,28 @@
-"use client";
-
-import { MovesDetail, PokemonInfo } from "@/types/pokemon";
-import { useEffect, useRef, useState } from "react";
-import { MoveDataTable } from "./data-table";
-import { moveListColumns } from "./columns";
+import { MovesDetail } from "@/types/pokemon";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useBuilderContext } from "../context/builder-context";
+import { useTeamContext } from "@/app/teams/[id]/context/team-context";
 import { VgcEngineService } from "@/services/vgc-engine";
 
-interface MoveListProps {
-  moveList: string[];
-  teamMoveLists: string[][];
-  pokemonSelected: PokemonInfo | null;
-  selectedPokemonIndex: number;
-  updateMember: (
-    index: number,
-    updater: (prev: PokemonInfo) => PokemonInfo
-  ) => void;
-}
-
-export const MoveList = ({
-  moveList,
-  teamMoveLists,
-  pokemonSelected,
-  selectedPokemonIndex,
-  updateMember,
-}: MoveListProps) => {
-  const [movesDetails, setMovesDetails] = useState<MovesDetail[]>([]);
+export const useMoveList = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [moves, setMoves] = useState<MovesDetail[]>([]);
+  const { pokeData } = useBuilderContext();
+  const { team, pokemonSelected, updateMember } = useTeamContext();
+
+  const selectedPokemonMoveNames = useMemo(() => {
+    return pokeData?.moves.map((moves) => moves.move.name) || [];
+  }, [pokeData]);
+
+  const teamMovesName = useMemo(() => {
+    return team.members.map((member) => member.moves.map((move) => move.name));
+  }, [team.members]);
+
+  const selectedPokemonIndex = useMemo(() => {
+    return team.members.findIndex(
+      (member) => member.indexTeam === pokemonSelected?.indexTeam
+    );
+  }, [team.members, pokemonSelected?.indexTeam]);
 
   const movesCache = useRef<Map<string, MovesDetail>>(new Map());
 
@@ -33,8 +30,14 @@ export const MoveList = ({
     const loadMoves = async () => {
       try {
         const uniqueMoves = Array.from(
-          new Set([...moveList, ...teamMoveLists.flat()])
+          new Set([...selectedPokemonMoveNames, ...teamMovesName.flat()])
         );
+
+        if (uniqueMoves.length === 0) {
+          setMoves([]);
+          setIsLoading(false);
+          return;
+        }
 
         const movesToFetch = uniqueMoves.filter(
           (move) => !movesCache.current.has(move)
@@ -51,21 +54,22 @@ export const MoveList = ({
           });
         }
 
-        const selectedMovesDetails = moveList
+        const selectedMovesDetails = selectedPokemonMoveNames
           .map((move) => movesCache.current.get(move))
           .filter((moveDetail): moveDetail is MovesDetail => !!moveDetail)
           .sort((a, b) => a.name.localeCompare(b.name));
 
-        setMovesDetails(selectedMovesDetails);
+        setMoves(selectedMovesDetails);
       } catch (error) {
-        console.error("Failed to fetch moves:", error);
+        const err = error as Error;
+        console.error("Failed to fetch moves:", err.message);
       } finally {
         setIsLoading(false);
       }
     };
 
     loadMoves();
-  }, [moveList, teamMoveLists, selectedPokemonIndex]);
+  }, [selectedPokemonMoveNames, teamMovesName, pokeData, team.members]);
 
   const handleAddMove = (move: MovesDetail) => {
     const pokemonIndex = selectedPokemonIndex;
@@ -95,25 +99,11 @@ export const MoveList = ({
     });
   };
 
-  return (
-    <div className="flex flex-col gap-2 p-2 w-full">
-      {isLoading ? (
-        <div className="flex flex-col gap-2 w-full">
-          {Array.from({ length: 6 }).map((_, index) => (
-            <div
-              key={index}
-              className="bg-stone-500/50 animate-pulse rounded-md w-full h-10"
-            />
-          ))}
-        </div>
-      ) : (
-        <MoveDataTable
-          columns={moveListColumns}
-          data={movesDetails}
-          onRowClick={handleAddMove}
-          selectedMoves={pokemonSelected?.moves.map((m) => m.name) || []}
-        />
-      )}
-    </div>
-  );
+  return {
+    moves,
+    setMoves,
+    isLoading,
+    setIsLoading,
+    handleAddMove,
+  };
 };

@@ -1,22 +1,26 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { PokemonTypeItem } from "@/components/pokemon/type";
-import { PokemonInfo } from "@/types/pokemon";
+import { useTeamContext } from "@/app/teams/[id]/context/team-context";
 import { formatApiName } from "@/utils/format";
+import { PokemonTypeItem } from "@/components/pokemon/type";
+import { useEffect, useState } from "react";
 
-interface MovesSelectedProps {
-  pokemonSelected: PokemonInfo | null;
-}
+export const MovesSelected = () => {
+  const { pokemonSelected } = useTeamContext();
+  const [windowWidth, setWindowWidth] = useState({ width: window.innerWidth });
 
-export const MovesSelected = ({ pokemonSelected }: MovesSelectedProps) => {
-  const { moves } = pokemonSelected || {};
+  useEffect(() => {
+    const handleResize = () => setWindowWidth({ width: window.innerWidth });
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <div className="flex w-full md:h-[200px] items-center justify-center px-6 md:px-10">
       <div className="flex flex-col gap-1 w-full">
         <AnimatePresence mode="sync">
-          {moves?.map((move, index) => {
+          {pokemonSelected?.moves?.map((move, index) => {
             return (
               <motion.div
                 key={move.name + index}
@@ -30,7 +34,10 @@ export const MovesSelected = ({ pokemonSelected }: MovesSelectedProps) => {
                   {formatApiName(move.name)}
                 </span>
                 <div className="flex gap-1 justify-end w-[50%] max-w-[160px] h-[36px]">
-                  <PokemonTypeItem pokemonType={[move.type]} arceusIcon />
+                  <PokemonTypeItem
+                    pokemonType={[move.type]}
+                    arceusIcon={windowWidth.width >= 1150}
+                  />
                   <div
                     className="w-[160px] bg-stone-700 dark:bg-stone-900 h-full flex items-center justify-center"
                     style={{

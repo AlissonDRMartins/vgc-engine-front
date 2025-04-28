@@ -3,6 +3,9 @@ import { useEffect, useState } from "react";
 
 export const useTeamStorage = (teamId: string) => {
   const [team, setTeam] = useState<Team | null>(null);
+  const [pokemonSelected, setPokemonSelected] = useState<PokemonInfo | null>(
+    null
+  );
 
   useEffect(() => {
     const stored = localStorage.getItem("teams");
@@ -105,5 +108,14 @@ export const useTeamStorage = (teamId: string) => {
     return team.members[index];
   };
 
-  return { team, updateTeam, addMember, updateMember, removeMember, getMember };
+  return {
+    team,
+    updateTeam,
+    addMember,
+    updateMember,
+    removeMember,
+    getMember,
+    pokemonSelected,
+    setPokemonSelected,
+  };
 };

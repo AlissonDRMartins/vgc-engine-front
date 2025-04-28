@@ -16,28 +16,31 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { PokemonInfo, Team } from "@/types/pokemon";
+import { PokemonInfo } from "@/types/pokemon";
 import { PokeService } from "@/services/poke";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { toast } from "sonner";
-import { saveSelectedPokemonIndex } from "./team-list/helpers";
+import { saveSelectedPokemonIndex } from "./helper/pokemon-selected";
+import { useTeamContext } from "../../../context/team-context";
 
 interface AddPokemonProps {
-  addMember: (pokemon: PokemonInfo) => void;
-  pokemonList: string[];
-  team: Team;
   isLoading?: boolean;
   setIsLoading: Dispatch<SetStateAction<boolean>>;
 }
 
-export const AddPokemon = ({
-  addMember,
-  pokemonList,
-  team,
-  isLoading,
-  setIsLoading,
-}: AddPokemonProps) => {
+export const AddPokemon = ({ isLoading, setIsLoading }: AddPokemonProps) => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const [pokemonList, setPokemonList] = useState<string[]>([]);
+  const { addMember, team } = useTeamContext();
+
+  useEffect(() => {
+    const fetchPokemonList = async () => {
+      const response = await PokeService.getPokemonList(0, 1500);
+      const pokemonNames = response.results.map((pokemon) => pokemon.name);
+      setPokemonList(pokemonNames);
+    };
+    fetchPokemonList();
+  }, []);
 
   const handleAddPokemon = async (pokemonName: string) => {
     if (!team) return;

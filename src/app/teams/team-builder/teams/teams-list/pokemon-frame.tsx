@@ -1,5 +1,5 @@
 "use client";
-import { saveSelectedPokemonIndex } from "@/app/teams/[id]/components/team-list/helpers";
+import { saveSelectedPokemonIndex } from "@/app/teams/[id]/components/team-content/team-list/helper/pokemon-selected";
 import { Skeleton } from "@/components/ui/skeleton";
 import { PokemonInfo, Team } from "@/types/pokemon";
 import { motion } from "framer-motion";

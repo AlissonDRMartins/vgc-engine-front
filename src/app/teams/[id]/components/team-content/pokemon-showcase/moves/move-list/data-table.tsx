@@ -48,12 +48,12 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
 }
 
-export function MoveDataTable<TData, TValue>({
+export function MoveDataTable({
   onRowClick,
   selectedMoves,
   columns,
   data,
-}: DataTableProps<TData, TValue>) {
+}: DataTableProps<MovesDetail, unknown>) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pageIndex, setPageIndex] = useState(0);
@@ -130,7 +130,7 @@ export function MoveDataTable<TData, TValue>({
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {table.getRowModel().rows?.length > 0 ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}

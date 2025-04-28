@@ -34,7 +34,7 @@ export type MovesDetail = {
   accuracy: number;
   damage_class: string;
   effect_chance: number;
-  effect_entries: string;
+  effect: string;
   id: number;
   name: string;
   power: number;

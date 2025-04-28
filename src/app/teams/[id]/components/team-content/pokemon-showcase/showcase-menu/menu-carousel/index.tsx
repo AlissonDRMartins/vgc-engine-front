@@ -1,13 +1,13 @@
 import {
   Carousel,
-  CarouselApi,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { Dispatch, ReactNode, SetStateAction } from "react";
-import { carouselItems } from "../carousel-items";
+import { ReactNode } from "react";
+import { useCarouselIndex } from "../../hook/useCarouselIndex";
+import { carouselItems } from "./carousel-items";
 import {
   Tooltip,
   TooltipContent,
@@ -15,19 +15,15 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-interface MenuOptionsProps {
-  setCarouselApi: Dispatch<SetStateAction<CarouselApi | undefined>>;
-  currentIndex: number;
+interface MenuCarouselProps {
   children?: ReactNode;
 }
 
-export const MenuOptions = ({
-  setCarouselApi,
-  currentIndex,
-  children,
-}: MenuOptionsProps) => {
+export const MenuCarousel = ({ children }: MenuCarouselProps) => {
+  const { currentIndex, setCarouselApi } = useCarouselIndex();
+
   return (
-    <div className="col-span-4 md:col-span-2 p-2 md:py-6 w-full flex justify-center h-full">
+    <div className="w-full md:w-[50%] p-2 md:py-6 flex justify-center h-full">
       <div className="flex flex-col gap-1 w-full">
         <div className="flex items-start w-full justify-center">
           <Carousel

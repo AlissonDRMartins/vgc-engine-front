@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import {
   Tooltip,
   TooltipContent,
@@ -13,15 +12,28 @@ import { PokemonTypeItem } from "../../../../../../../../components/pokemon/type
 import { formatApiName } from "@/utils/format";
 import { PokemonDamageClasses } from "@/components/pokemon/damage-classes";
 import { Button } from "@/components/ui/button";
-import { ArrowDown, ArrowUp } from "lucide-react";
-import {
-  Drawer,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
 import { PokemonMoveTarget } from "@/components/pokemon/move-target";
+import dynamic from "next/dynamic";
+
+const Drawer = dynamic(() =>
+  import("@/components/ui/drawer").then((m) => m.Drawer)
+);
+const DrawerTrigger = dynamic(() =>
+  import("@/components/ui/drawer").then((m) => m.DrawerTrigger)
+);
+const DrawerContent = dynamic(() =>
+  import("@/components/ui/drawer").then((m) => m.DrawerContent)
+);
+const DrawerHeader = dynamic(() =>
+  import("@/components/ui/drawer").then((m) => m.DrawerHeader)
+);
+const DrawerTitle = dynamic(() =>
+  import("@/components/ui/drawer").then((m) => m.DrawerTitle)
+);
+const ArrowUp = dynamic(() => import("lucide-react").then((m) => m.ArrowUp));
+const ArrowDown = dynamic(() =>
+  import("lucide-react").then((m) => m.ArrowDown)
+);
 
 export const moveListColumns: ColumnDef<MovesDetail>[] = [
   {
@@ -43,34 +55,27 @@ export const moveListColumns: ColumnDef<MovesDetail>[] = [
       );
     },
     cell: (cell) => {
-      return (
-        <motion.span
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          key={cell.row.original.name}
-        >
-          {formatApiName(cell.row.original.name)}
-        </motion.span>
-      );
+      return <span>{formatApiName(cell.row.original.name)}</span>;
     },
   },
   {
     accessorKey: "type",
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          className="p-1 hover:bg-transparent hover:text-white"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          <span>Type</span>
-          {column.getIsSorted() === "asc" ? (
-            <ArrowUp />
-          ) : column.getIsSorted() === "desc" ? (
-            <ArrowDown />
-          ) : null}
-        </Button>
+        <div className="w-full flex justify-center">
+          <Button
+            variant="ghost"
+            className="p-1 hover:bg-transparent hover:text-white"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            <span>Type</span>
+            {column.getIsSorted() === "asc" ? (
+              <ArrowUp />
+            ) : column.getIsSorted() === "desc" ? (
+              <ArrowDown />
+            ) : null}
+          </Button>
+        </div>
       );
     },
     cell: (cell) => {
@@ -89,20 +94,22 @@ export const moveListColumns: ColumnDef<MovesDetail>[] = [
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button
-                variant="ghost"
-                className="p-1 hover:bg-transparent hover:text-white"
-                onClick={() =>
-                  column.toggleSorting(column.getIsSorted() === "asc")
-                }
-              >
-                <span>DC</span>
-                {column.getIsSorted() === "asc" ? (
-                  <ArrowUp />
-                ) : column.getIsSorted() === "desc" ? (
-                  <ArrowDown />
-                ) : null}
-              </Button>
+              <div className="w-full flex justify-center">
+                <Button
+                  variant="ghost"
+                  className="p-1 hover:bg-transparent hover:text-white"
+                  onClick={() =>
+                    column.toggleSorting(column.getIsSorted() === "asc")
+                  }
+                >
+                  <span>DC</span>
+                  {column.getIsSorted() === "asc" ? (
+                    <ArrowUp />
+                  ) : column.getIsSorted() === "desc" ? (
+                    <ArrowDown />
+                  ) : null}
+                </Button>
+              </div>
             </TooltipTrigger>
             <TooltipContent>
               <span>Damage Class</span>
@@ -142,14 +149,7 @@ export const moveListColumns: ColumnDef<MovesDetail>[] = [
       const power = cell.row.original.power;
       return (
         <div className="w-full flex justify-center">
-          <motion.span
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            key={cell.row.original.name}
-          >
-            {power || "-"}
-          </motion.span>
+          <span>{power || "-"}</span>
         </div>
       );
     },
@@ -176,14 +176,7 @@ export const moveListColumns: ColumnDef<MovesDetail>[] = [
       const accuracy = cell.row.original.accuracy;
       return (
         <div className="w-full flex justify-center">
-          <motion.span
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            key={cell.row.original.name}
-          >
-            {accuracy || "-"}
-          </motion.span>
+          <span>{accuracy || "-"}</span>
         </div>
       );
     },
@@ -210,14 +203,7 @@ export const moveListColumns: ColumnDef<MovesDetail>[] = [
       const pp = cell.row.original.pp;
       return (
         <div className="w-full flex justify-center">
-          <motion.span
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            key={cell.row.original.name}
-          >
-            {pp}
-          </motion.span>
+          <span>{pp}</span>
         </div>
       );
     },
@@ -226,16 +212,8 @@ export const moveListColumns: ColumnDef<MovesDetail>[] = [
     accessorKey: "effect_entries",
     header: "Effect",
     cell: (cell) => {
-      const {
-        effect_entries: effect,
-        name,
-        accuracy,
-        damage_class,
-        power,
-        pp,
-        target,
-        type,
-      } = cell.row.original;
+      const { effect, name, accuracy, damage_class, power, pp, target, type } =
+        cell.row.original;
       if (!effect) {
         return <span>-</span>;
       }
@@ -292,18 +270,20 @@ export const moveListColumns: ColumnDef<MovesDetail>[] = [
     accessorKey: "target",
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          className="p-1 hover:bg-transparent hover:text-white"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          <span>Target</span>
-          {column.getIsSorted() === "asc" ? (
-            <ArrowUp />
-          ) : column.getIsSorted() === "desc" ? (
-            <ArrowDown />
-          ) : null}
-        </Button>
+        <div className="w-full flex justify-center">
+          <Button
+            variant="ghost"
+            className="p-1 hover:bg-transparent hover:text-white"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            <span>Target</span>
+            {column.getIsSorted() === "asc" ? (
+              <ArrowUp />
+            ) : column.getIsSorted() === "desc" ? (
+              <ArrowDown />
+            ) : null}
+          </Button>
+        </div>
       );
     },
     cell: (cell) => {
