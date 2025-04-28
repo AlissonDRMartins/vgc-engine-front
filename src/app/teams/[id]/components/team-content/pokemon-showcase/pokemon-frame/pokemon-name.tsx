@@ -31,7 +31,7 @@ export const PokemonName = ({ name }: PokemonNameProps) => {
           {formatApiName(name)}
         </motion.span>
       </AnimatePresence>
-      <PokemonTypeItem pokemonType={types} />
+      <PokemonTypeItem pokemonType={types} withAnimation />
     </div>
   );
 };

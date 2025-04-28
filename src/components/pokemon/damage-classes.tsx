@@ -1,6 +1,5 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
 import Image, { StaticImageData } from "next/image";
 import status from "@/assets/images/status.png";
 import special from "@/assets/images/special.png";
@@ -11,15 +10,27 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import dynamic from "next/dynamic";
 
-export const PokemonDamageClasses = ({ dc }: { dc: string }) => {
+const MotionDiv = dynamic(
+  () => import("framer-motion").then((mod) => mod.motion.div),
+  { ssr: false }
+);
+
+export const PokemonDamageClasses = ({
+  dc,
+  withAnimation = false,
+}: {
+  dc: string;
+  withAnimation?: boolean;
+}) => {
   return (
     <div className="flex items-center justify-center w-[36px]">
-      <AnimatePresence mode="wait">
-        <TooltipProvider key={dc}>
-          <Tooltip delayDuration={0}>
-            <TooltipTrigger asChild>
-              <motion.div
+      <TooltipProvider key={dc}>
+        <Tooltip delayDuration={0}>
+          <TooltipTrigger asChild>
+            {withAnimation ? (
+              <MotionDiv
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -10 }}
@@ -31,15 +42,27 @@ export const PokemonDamageClasses = ({ dc }: { dc: string }) => {
                   className="w-10 h-10 object-contain"
                   width={192}
                   height={192}
+                  loading="lazy"
                 />
-              </motion.div>
-            </TooltipTrigger>
-            <TooltipContent>
-              <span className="capitalize">{dc}</span>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      </AnimatePresence>
+              </MotionDiv>
+            ) : (
+              <div>
+                <Image
+                  src={damageClass[dc]}
+                  alt={dc}
+                  className="w-10 h-10 object-contain"
+                  width={192}
+                  height={192}
+                  loading="lazy"
+                />
+              </div>
+            )}
+          </TooltipTrigger>
+          <TooltipContent>
+            <span className="capitalize">{dc}</span>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
     </div>
   );
 };

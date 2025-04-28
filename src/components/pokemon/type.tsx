@@ -1,6 +1,5 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
 import Image, { StaticImageData } from "next/image";
 import bug from "@/assets/images/bug.png";
 import dark from "@/assets/images/dark.png";
@@ -28,12 +27,21 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
+// Importação dinâmica do Framer Motion apenas se necessário
+import dynamic from "next/dynamic";
+const MotionDiv = dynamic(
+  () => import("framer-motion").then((mod) => mod.motion.div),
+  { ssr: false }
+);
+
 export const PokemonTypeItem = ({
   pokemonType,
   arceusIcon,
+  withAnimation = false, // Nova prop padrão: false
 }: {
   pokemonType: string[];
   arceusIcon?: boolean;
+  withAnimation?: boolean;
 }) => {
   const url = (type: number) => {
     return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/types/generation-viii/sword-shield/${type}.png`;
@@ -41,44 +49,49 @@ export const PokemonTypeItem = ({
 
   return (
     <div className={`flex items-center ${arceusIcon ? "w-full" : ""}`}>
-      <AnimatePresence mode="wait">
-        {pokemonType.map((type) => {
-          return (
-            <TooltipProvider key={type}>
-              <Tooltip delayDuration={0}>
-                <TooltipTrigger asChild>
-                  <motion.div
+      {pokemonType.map((type) => {
+        const IconContent = (
+          <Image
+            src={
+              arceusIcon
+                ? url(typeIndex[type.toLowerCase()])
+                : typeIcons[type.toLowerCase()]
+            }
+            alt="Pokemon Type"
+            className={
+              arceusIcon ? "max-h-10 rounded-sm" : "w-8 h-8 object-contain"
+            }
+            width={100}
+            height={100}
+            loading="lazy" // lazy para mais performance
+          />
+        );
+
+        return (
+          <TooltipProvider key={type}>
+            <Tooltip delayDuration={0}>
+              <TooltipTrigger asChild>
+                {withAnimation ? (
+                  <MotionDiv
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -10 }}
                     whileHover={{ scale: arceusIcon ? 1.1 : 1.3 }}
                     key={type}
                   >
-                    <Image
-                      src={
-                        arceusIcon
-                          ? url(typeIndex[type.toLowerCase()])
-                          : typeIcons[type.toLowerCase()]
-                      }
-                      alt="Pokemon Type"
-                      className={
-                        arceusIcon
-                          ? "max-h-10 rounded-sm"
-                          : "w-8 h-8 object-contain"
-                      }
-                      width={100}
-                      height={100}
-                    />
-                  </motion.div>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <span className="capitalize">{type}</span>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          );
-        })}
-      </AnimatePresence>
+                    {IconContent}
+                  </MotionDiv>
+                ) : (
+                  <div>{IconContent}</div>
+                )}
+              </TooltipTrigger>
+              <TooltipContent>
+                <span className="capitalize">{type}</span>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        );
+      })}
     </div>
   );
 };

@@ -16,6 +16,6 @@ export const PokemonInfoDisplay = ({
     <span className={`capitalize ${isSelected ? "text-xl" : "text-md"}`}>
       {pokemon.name}
     </span>
-    <PokemonTypeItem pokemonType={pokemon.types} />
+    <PokemonTypeItem pokemonType={pokemon.types} withAnimation />
   </div>
 );
