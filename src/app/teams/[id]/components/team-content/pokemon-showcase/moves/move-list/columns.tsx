@@ -153,6 +153,15 @@ export const moveListColumns: ColumnDef<MovesDetail>[] = [
         </div>
       );
     },
+    filterFn: (row, columnId, filterValue) => {
+      if (!filterValue) return true;
+
+      const power = row.getValue<number>(columnId);
+      const min = filterValue?.min ?? -Infinity;
+      const max = filterValue?.max ?? Infinity;
+
+      return power >= min && power <= max;
+    },
   },
   {
     accessorKey: "accuracy",

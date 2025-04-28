@@ -53,7 +53,12 @@ export function MoveDataTable({
   columns,
   data,
 }: DataTableProps<MovesDetail, unknown>) {
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([
+    {
+      id: "power",
+      value: 55,
+    },
+  ]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pageIndex, setPageIndex] = useState(0);
   const [pageSize, setPageSize] = useState(10);

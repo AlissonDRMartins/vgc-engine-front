@@ -230,6 +230,65 @@ export const TableFilters = ({ table }: TableFiltersProps) => {
                 ))}
               </SelectContent>
             </Select>
+
+            <div className="w-full md:w-[200px] flex">
+              <Input
+                type="number"
+                value={
+                  (
+                    table.getColumn("power")?.getFilterValue() as {
+                      min?: number;
+                      max?: number;
+                    }
+                  )?.min ?? ""
+                }
+                onChange={(event) => {
+                  const value = event.target.value;
+                  const currentFilter =
+                    (table.getColumn("power")?.getFilterValue() as {
+                      min?: number;
+                      max?: number;
+                    }) || {};
+                  table
+                    .getColumn("power")
+                    ?.setFilterValue(
+                      value === ""
+                        ? { ...currentFilter, min: undefined }
+                        : { ...currentFilter, min: Number(value) }
+                    );
+                }}
+                placeholder="Min power"
+                className="w-full rounded-r-none"
+              />
+              <Input
+                type="number"
+                value={
+                  (
+                    table.getColumn("power")?.getFilterValue() as {
+                      min?: number;
+                      max?: number;
+                    }
+                  )?.max ?? ""
+                }
+                onChange={(event) => {
+                  const value = event.target.value;
+                  const currentFilter =
+                    (table.getColumn("power")?.getFilterValue() as {
+                      min?: number;
+                      max?: number;
+                    }) || {};
+                  table
+                    .getColumn("power")
+                    ?.setFilterValue(
+                      value === ""
+                        ? { ...currentFilter, max: undefined }
+                        : { ...currentFilter, max: Number(value) }
+                    );
+                }}
+                placeholder="Max power"
+                className="w-full rounded-l-none"
+              />
+            </div>
           </div>
         </AccordionContent>
       </AccordionItem>
