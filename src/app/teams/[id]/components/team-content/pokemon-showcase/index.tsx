@@ -6,12 +6,12 @@ import { PokemonFrame } from "./pokemon-frame";
 import { usePokeData } from "./hook/usePokeData";
 import { BuilderProvider } from "./context/builder-context";
 import { ShowcaseMenu } from "./showcase-menu";
-import { useCarouselIndex } from "./hook/useCarouselIndex";
 import { MoveList } from "./moves/move-list";
+import { useMenuContext } from "./context/menu-context";
 
 export const PokemonShowcase = () => {
   const { pokeData } = usePokeData();
-  const { currentIndex } = useCarouselIndex();
+  const { currentIndex } = useMenuContext();
 
   return (
     <BuilderProvider value={{ pokeData }}>

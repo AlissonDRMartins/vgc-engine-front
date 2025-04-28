@@ -1,9 +1,9 @@
-import { useCarouselIndex } from "../hook/useCarouselIndex";
+import { useMenuContext } from "../context/menu-context";
 import { MovesSelected } from "../moves/moves-selected";
 import { MenuCarousel } from "./menu-carousel";
 
 export const ShowcaseMenu = () => {
-  const { currentIndex } = useCarouselIndex();
+  const { currentIndex } = useMenuContext();
 
   return (
     <MenuCarousel>

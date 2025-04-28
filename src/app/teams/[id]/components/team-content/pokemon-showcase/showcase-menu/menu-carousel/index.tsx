@@ -6,7 +6,6 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { ReactNode } from "react";
-import { useCarouselIndex } from "../../hook/useCarouselIndex";
 import { carouselItems } from "./carousel-items";
 import {
   Tooltip,
@@ -14,13 +13,14 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useMenuContext } from "../../context/menu-context";
 
 interface MenuCarouselProps {
   children?: ReactNode;
 }
 
 export const MenuCarousel = ({ children }: MenuCarouselProps) => {
-  const { currentIndex, setCarouselApi } = useCarouselIndex();
+  const { currentIndex, setCarouselApi } = useMenuContext();
 
   return (
     <div className="w-full md:w-[50%] p-2 md:py-6 flex justify-center h-full">
