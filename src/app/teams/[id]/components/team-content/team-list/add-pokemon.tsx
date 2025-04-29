@@ -68,6 +68,43 @@ export const AddPokemon = ({ isLoading, setIsLoading }: AddPokemonProps) => {
       moves: [],
       sprite: pokeInfo.sprites.other["official-artwork"].front_default,
       indexTeam: team.members.length,
+      baseStats: {
+        hp:
+          pokeInfo.stats.find((status) => status.stat.name === "hp")
+            ?.base_stat || 0,
+        atk:
+          pokeInfo.stats.find((status) => status.stat.name === "attack")
+            ?.base_stat || 0,
+        def:
+          pokeInfo.stats.find((status) => status.stat.name === "defense")
+            ?.base_stat || 0,
+        spatk:
+          pokeInfo.stats.find((status) => status.stat.name === "special-attack")
+            ?.base_stat || 0,
+        spdef:
+          pokeInfo.stats.find(
+            (status) => status.stat.name === "special-defense"
+          )?.base_stat || 0,
+        speed:
+          pokeInfo.stats.find((status) => status.stat.name === "speed")
+            ?.base_stat || 0,
+      },
+      ivs: {
+        hp: 0,
+        atk: 0,
+        def: 0,
+        spatk: 0,
+        spdef: 0,
+        speed: 0,
+      },
+      evs: {
+        hp: 0,
+        atk: 0,
+        def: 0,
+        spatk: 0,
+        spdef: 0,
+        speed: 0,
+      },
     };
 
     addMember(selectedPokemon);

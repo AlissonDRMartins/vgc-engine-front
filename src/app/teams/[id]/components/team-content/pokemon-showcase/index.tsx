@@ -8,6 +8,7 @@ import { BuilderProvider } from "./context/builder-context";
 import { ShowcaseMenu } from "./showcase-menu";
 import { MoveList } from "./moves/move-list";
 import { useMenuContext } from "./context/menu-context";
+import { StatsModifier } from "./base-stats/stats-modifier";
 
 export const PokemonShowcase = () => {
   const { pokeData } = usePokeData();
@@ -24,7 +25,13 @@ export const PokemonShowcase = () => {
                 <ShowcaseMenu />
               </div>
               <div className="md:mt-3">
-                {currentIndex === 0 ? <MoveList /> : <div></div>}
+                {currentIndex === 0 ? (
+                  <MoveList />
+                ) : currentIndex === 1 ? (
+                  <StatsModifier />
+                ) : (
+                  <div></div>
+                )}
               </div>
             </div>
           </PokebuilderCard>
