@@ -90,12 +90,12 @@ export const AddPokemon = ({ isLoading, setIsLoading }: AddPokemonProps) => {
             ?.base_stat || 0,
       },
       ivs: {
-        hp: 0,
-        atk: 0,
-        def: 0,
-        spatk: 0,
-        spdef: 0,
-        speed: 0,
+        hp: 31,
+        atk: 31,
+        def: 31,
+        spatk: 31,
+        spdef: 31,
+        speed: 31,
       },
       evs: {
         hp: 0,
