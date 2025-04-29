@@ -22,7 +22,7 @@ export type PokemonInfo = {
   baseStats: BaseStats;
   ivs: BaseStats;
   evs: BaseStats;
-  nature?: PokemonNatureEnum;
+  nature: PokemonNatureEnum;
   sprite?: string | null;
   indexTeam: number;
 };

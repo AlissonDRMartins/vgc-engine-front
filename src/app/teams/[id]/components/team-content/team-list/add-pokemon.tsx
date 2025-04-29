@@ -16,7 +16,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { PokemonInfo } from "@/types/pokemon";
+import { PokemonInfo, PokemonNatureEnum } from "@/types/pokemon";
 import { PokeService } from "@/services/poke";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -105,6 +105,7 @@ export const AddPokemon = ({ isLoading, setIsLoading }: AddPokemonProps) => {
         spdef: 0,
         speed: 0,
       },
+      nature: PokemonNatureEnum.Hardy,
     };
 
     addMember(selectedPokemon);
