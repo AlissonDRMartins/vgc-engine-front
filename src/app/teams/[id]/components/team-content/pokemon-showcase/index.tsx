@@ -24,7 +24,7 @@ export const PokemonShowcase = () => {
                 <PokemonFrame />
                 <ShowcaseMenu />
               </div>
-              <div className="md:mt-3">
+              <div>
                 {currentIndex === 0 ? (
                   <MoveList />
                 ) : currentIndex === 1 ? (

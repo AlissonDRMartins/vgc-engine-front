@@ -78,11 +78,11 @@ export const useTeamStorage = (teamId: string) => {
     if (!team || index < 0 || index >= team.members.length) return;
 
     const updatedMembers = [...team.members];
-
     const prevMember = updatedMembers[index];
     if (!prevMember) return;
 
-    updatedMembers[index] = updater(prevMember);
+    const updatedMember = updater(prevMember);
+    updatedMembers[index] = updatedMember;
 
     const updated = {
       ...team,
@@ -90,6 +90,10 @@ export const useTeamStorage = (teamId: string) => {
     };
 
     saveTeam(updated);
+
+    if (pokemonSelected && pokemonSelected.name === prevMember.name) {
+      setPokemonSelected(updatedMember);
+    }
   };
 
   const removeMember = (index: number) => {

@@ -17,7 +17,7 @@ export const MovesSelected = () => {
   }, []);
 
   return (
-    <div className="flex w-full md:h-[200px] items-center justify-center px-6 md:px-10">
+    <div className="flex w-full md:h-[200px] items-center justify-center mt-8 md:mt-0 px-6 md:px-10">
       <div className="flex flex-col gap-1 w-full">
         <AnimatePresence mode="sync">
           {pokemonSelected?.moves?.map((move, index) => {

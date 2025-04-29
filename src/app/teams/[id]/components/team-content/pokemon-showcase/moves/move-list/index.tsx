@@ -28,7 +28,7 @@ export const MoveList = () => {
 
   if (isLoading)
     return (
-      <div className="flex flex-col gap-2 p-2 w-full">
+      <div className="flex flex-col gap-2 p-2 w-full mt-3">
         {Array.from({ length: 6 }).map((_, index) => (
           <div
             key={index}
@@ -39,7 +39,7 @@ export const MoveList = () => {
     );
 
   return (
-    <div className="flex flex-col gap-2 p-2 w-full">
+    <div className="flex flex-col gap-2 p-2 w-full mt-3">
       <MoveDataTable
         columns={moveListColumns}
         data={moves}

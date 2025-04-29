@@ -4,6 +4,8 @@ import { PokemonTypeItem } from "@/components/pokemon/type";
 import { formatApiName } from "@/utils/format";
 import { AnimatePresence, motion } from "framer-motion";
 import { useBuilderContext } from "../context/builder-context";
+import { useTeamContext } from "@/app/teams/[id]/context/team-context";
+import { Input } from "@/components/ui/input";
 
 interface PokemonNameProps {
   name: string;
@@ -11,6 +13,7 @@ interface PokemonNameProps {
 
 export const PokemonName = ({ name }: PokemonNameProps) => {
   const { pokeData } = useBuilderContext();
+  const { pokemonSelected } = useTeamContext();
   const types: string[] = pokeData?.types.map((type) => type.type.name) || [];
 
   return (
@@ -31,7 +34,16 @@ export const PokemonName = ({ name }: PokemonNameProps) => {
           {formatApiName(name)}
         </motion.span>
       </AnimatePresence>
-      <PokemonTypeItem pokemonType={types} withAnimation />
+      <div className="flex gap-3 items-center">
+        <div className="flex gap-2 items-center">
+          <span>Lv.</span>
+          <Input
+            value={pokemonSelected?.lvl}
+            className="text-center border-none h-6 text-sm md:text-base w-[45px] !bg-stone-800 rounded-sm"
+          />
+        </div>
+        <PokemonTypeItem pokemonType={types} withAnimation />
+      </div>
     </div>
   );
 };

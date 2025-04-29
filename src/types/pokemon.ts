@@ -25,6 +25,7 @@ export type PokemonInfo = {
   nature: PokemonNatureEnum;
   sprite?: string | null;
   indexTeam: number;
+  lvl: number;
 };
 
 export type Team = {
@@ -48,29 +49,29 @@ export type MovesDetail = {
 };
 
 export enum PokemonNatureEnum {
-  Hardy = "Hardy",
-  Lonely = "Lonely",
-  Brave = "Brave",
-  Adamant = "Adamant",
-  Naughty = "Naughty",
-  Bold = "Bold",
-  Docile = "Docile",
-  Relaxed = "Relaxed",
-  Impish = "Impish",
-  Lax = "Lax",
-  Timid = "Timid",
-  Hasty = "Hasty",
-  Serious = "Serious",
-  Jolly = "Jolly",
-  Naive = "Naive",
-  Modest = "Modest",
-  Mild = "Mild",
-  Quiet = "Quiet",
-  Bashful = "Bashful",
-  Rash = "Rash",
-  Calm = "Calm",
-  Gentle = "Gentle",
-  Sassy = "Sassy",
-  Careful = "Careful",
-  Quirky = "Quirky",
+  hardy = "hardy",
+  lonely = "lonely",
+  brave = "brave",
+  adamant = "adamant",
+  naughty = "naughty",
+  bold = "bold",
+  docile = "docile",
+  relaxed = "relaxed",
+  impish = "impish",
+  lax = "lax",
+  timid = "timid",
+  hasty = "hasty",
+  serious = "serious",
+  jolly = "jolly",
+  naive = "naive",
+  modest = "modest",
+  mild = "mild",
+  quiet = "quiet",
+  bashful = "bashful",
+  rash = "rash",
+  calm = "calm",
+  gentle = "gentle",
+  sassy = "sassy",
+  careful = "careful",
+  quirky = "quirky",
 }

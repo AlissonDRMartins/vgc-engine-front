@@ -23,7 +23,7 @@ export const MenuCarousel = ({ children }: MenuCarouselProps) => {
   const { currentIndex, setCarouselApi } = useMenuContext();
 
   return (
-    <div className="w-full md:w-[50%] p-2 md:py-6 flex justify-center h-full">
+    <div className="w-full md:w-[50%] p-2 md:pt-6 flex justify-center h-full">
       <div className="flex flex-col gap-1 w-full">
         <div className="flex items-start w-full justify-center">
           <Carousel
@@ -68,7 +68,7 @@ export const MenuCarousel = ({ children }: MenuCarouselProps) => {
             {carouselItems[currentIndex].name}
           </span>
         </div>
-        <div className="mt-8 md:mt-0">{children}</div>
+        <div>{children}</div>
       </div>
     </div>
   );

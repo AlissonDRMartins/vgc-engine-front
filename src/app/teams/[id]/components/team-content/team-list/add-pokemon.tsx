@@ -105,7 +105,8 @@ export const AddPokemon = ({ isLoading, setIsLoading }: AddPokemonProps) => {
         spdef: 0,
         speed: 0,
       },
-      nature: PokemonNatureEnum.Hardy,
+      nature: PokemonNatureEnum.hardy,
+      lvl: 50,
     };
 
     addMember(selectedPokemon);
