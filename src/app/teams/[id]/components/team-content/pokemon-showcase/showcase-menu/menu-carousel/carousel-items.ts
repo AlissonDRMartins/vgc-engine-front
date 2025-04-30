@@ -1,12 +1,12 @@
 import {
-  Sliders,
-  Leaf,
   Zap,
   Package,
   Star,
   Info,
   LucideIcon,
   Swords,
+  Dumbbell,
+  Boxes,
 } from "lucide-react";
 
 export type CarouselItem = {
@@ -20,12 +20,12 @@ export const carouselItems: CarouselItem[] = [
     icon: Swords,
   },
   {
-    name: "EVs & IVs",
-    icon: Sliders,
+    name: "Training",
+    icon: Dumbbell,
   },
   {
-    name: "Nature",
-    icon: Leaf,
+    name: "Abilities & Items",
+    icon: Boxes,
   },
   {
     name: "Ability",

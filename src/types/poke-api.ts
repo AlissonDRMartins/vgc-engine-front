@@ -173,3 +173,65 @@ export interface nameUrl {
   name: string;
   url: string;
 }
+
+export interface AllItemsApiResponse {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  result: nameUrl[];
+}
+
+export interface ItemApiResponse {
+  id: number;
+  name: string;
+  cost: number;
+  attributes: nameUrl[];
+  category: nameUrl;
+  effect_entries: VerboseEffect[];
+  flavor_text_entries: FlavorText[];
+  fling_effect: nameUrl | null;
+  fling_power: number | null;
+  game_indices: ItemGameIndex[];
+  held_by_pokemon: HeldByPokemon[];
+  machines: MachineVersion[];
+  names: ItemName[];
+  sprites: {
+    default: string;
+  };
+  baby_trigger_for: null;
+}
+
+export interface VerboseEffect {
+  effect: string;
+  short_effect: string;
+  language: nameUrl;
+}
+
+export interface FlavorText {
+  text: string;
+  language: nameUrl;
+  version_group: nameUrl;
+}
+
+export interface ItemGameIndex {
+  game_index: number;
+  generation: nameUrl;
+}
+
+export interface HeldByPokemon {
+  pokemon: nameUrl;
+  version_details: {
+    rarity: number;
+    version: nameUrl;
+  }[];
+}
+
+export interface MachineVersion {
+  machine: nameUrl;
+  version_group: nameUrl;
+}
+
+export interface ItemName {
+  name: string;
+  language: nameUrl;
+}

@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useBuilderContext } from "../context/builder-context";
 import { useTeamContext } from "@/app/teams/[id]/context/team-context";
 import { Input } from "@/components/ui/input";
+import { useEffect, useState } from "react";
 
 interface PokemonNameProps {
   name: string;
@@ -13,8 +14,32 @@ interface PokemonNameProps {
 
 export const PokemonName = ({ name }: PokemonNameProps) => {
   const { pokeData } = useBuilderContext();
-  const { pokemonSelected } = useTeamContext();
+  const { pokemonSelected, updateMember } = useTeamContext();
   const types: string[] = pokeData?.types.map((type) => type.type.name) || [];
+  const level = pokemonSelected?.lvl || 1;
+
+  const [localLevel, setLocalLevel] = useState<string>(level.toString());
+
+  useEffect(() => {
+    setLocalLevel(level.toString());
+  }, [level]);
+
+  const handleLevelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (/^\d*$/.test(value)) setLocalLevel(value);
+  };
+
+  const handleLevelBlur = () => {
+    const parsed = parseInt(localLevel);
+    const newLevel = isNaN(parsed) ? 1 : Math.min(Math.max(parsed, 1), 100);
+
+    updateMember(pokemonSelected!.indexTeam, (prev) => ({
+      ...prev,
+      lvl: newLevel,
+    }));
+
+    setLocalLevel(newLevel.toString());
+  };
 
   return (
     <div
@@ -38,8 +63,11 @@ export const PokemonName = ({ name }: PokemonNameProps) => {
         <div className="flex gap-2 items-center">
           <span>Lv.</span>
           <Input
-            value={pokemonSelected?.lvl}
-            className="text-center border-none h-6 text-sm md:text-base w-[45px] !bg-stone-800 rounded-sm"
+            value={localLevel}
+            onChange={handleLevelChange}
+            onBlur={handleLevelBlur}
+            inputMode="numeric"
+            className="text-center border-none h-6 text-sm md:text-base w-[45px] p-0 !bg-stone-800 rounded-sm"
           />
         </div>
         <PokemonTypeItem pokemonType={types} withAnimation />

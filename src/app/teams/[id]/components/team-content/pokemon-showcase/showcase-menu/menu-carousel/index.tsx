@@ -24,7 +24,7 @@ export const MenuCarousel = ({ children }: MenuCarouselProps) => {
 
   return (
     <div className="w-full md:w-[50%] p-2 md:pt-6 flex justify-center h-full">
-      <div className="flex flex-col gap-1 w-full">
+      <div className="flex flex-col gap-1 w-full h-full">
         <div className="flex items-start w-full justify-center">
           <Carousel
             opts={{ loop: true }}
@@ -68,7 +68,7 @@ export const MenuCarousel = ({ children }: MenuCarouselProps) => {
             {carouselItems[currentIndex].name}
           </span>
         </div>
-        <div>{children}</div>
+        <div className="h-full">{children}</div>
       </div>
     </div>
   );

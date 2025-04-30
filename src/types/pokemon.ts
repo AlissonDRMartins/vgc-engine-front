@@ -75,3 +75,14 @@ export enum PokemonNatureEnum {
   careful = "careful",
   quirky = "quirky",
 }
+
+export interface ItemDetail {
+  name: string;
+  effect: string;
+  category: string;
+}
+
+export interface AbilityDetail {
+  name: string;
+  effect: string;
+}

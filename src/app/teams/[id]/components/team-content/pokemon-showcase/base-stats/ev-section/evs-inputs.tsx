@@ -4,6 +4,7 @@ import { Slider } from "@/components/ui/slider";
 import { Input } from "@/components/ui/input";
 import { ChangeEvent } from "react";
 import { natureModifiers } from "@/utils/nature";
+import { AnimatedNumber } from "@/utils/animate-number";
 
 interface EvsInputsProps {
   pokemonSelected: PokemonInfo | null;
@@ -42,7 +43,7 @@ export const EvsInputs = ({
 
   return (
     <div className="flex flex-col items-start gap-2 w-full">
-      {statLabels.map((stat) => (
+      {statLabels.map((stat, index) => (
         <div key={stat.key} className="w-full">
           <div className="flex w-full">
             <div
@@ -52,7 +53,11 @@ export const EvsInputs = ({
               }}
             >
               <span className="text-sm md:text-base h-6 flex items-center">
-                {pokemonSelected?.baseStats[stat.key] ?? 0}
+                <AnimatedNumber
+                  value={pokemonSelected?.baseStats[stat.key] ?? 0}
+                  delay={200 * index + 500}
+                  duration={200}
+                />
               </span>
             </div>
             <div

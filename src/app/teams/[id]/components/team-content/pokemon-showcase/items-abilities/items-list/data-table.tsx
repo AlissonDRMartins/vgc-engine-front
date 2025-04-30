@@ -1,7 +1,15 @@
 "use client";
 
+import { motion } from "framer-motion";
 import {
-  ColumnDef,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
   ColumnFiltersState,
   flexRender,
   getCoreRowModel,
@@ -11,35 +19,25 @@ import {
   SortingState,
   useReactTable,
 } from "@tanstack/react-table";
-
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { ItemsFilters } from "./filters";
+import { ColumnsItem } from "./columns";
+import { ItemDetail } from "@/types/pokemon";
 import { useState } from "react";
 import { Separator } from "@/components/ui/separator";
-import { cn } from "@/lib/utils";
-import { MovesDetail } from "@/types/pokemon";
-import { TableFilters } from "./filters";
 import { PaginationControl } from "@/components/pagination-control";
+import { cn } from "@/lib/utils";
 
-interface DataTableProps<TData, TValue> {
-  onRowClick?: (data: TData) => void;
-  selectedMoves?: string[];
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
+interface DataTableProps {
+  data: ItemDetail[];
+  selectedItem?: string;
+  onRowClick?: (data: ItemDetail) => void;
 }
 
-export function MoveDataTable({
-  onRowClick,
-  selectedMoves,
-  columns,
+export const DataTable = ({
   data,
-}: DataTableProps<MovesDetail, unknown>) {
+  selectedItem,
+  onRowClick,
+}: DataTableProps) => {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pageIndex, setPageIndex] = useState(0);
@@ -47,7 +45,7 @@ export function MoveDataTable({
 
   const table = useReactTable({
     data,
-    columns,
+    columns: ColumnsItem,
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
@@ -75,16 +73,22 @@ export function MoveDataTable({
   });
 
   return (
-    <div className="flex flex-col">
-      <TableFilters table={table} />
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 10 }}
+      transition={{ delay: 0.2 }}
+      className="flex flex-col gap-2"
+    >
+      <ItemsFilters table={table} />
       <div className="rounded-md border flex flex-col gap-2">
-        <Table className="rounded-md">
-          <TableHeader className="bg-red-900 dark:bg-red-500/30 rounded-md">
+        <Table>
+          <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id} className="text-white">
+                    <TableHead key={header.id}>
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -98,14 +102,14 @@ export function MoveDataTable({
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length > 0 ? (
+            {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   className={cn(
-                    "hover:bg-stone-200 dark:hover:bg-stone-900 hover:cursor-pointer",
-                    selectedMoves?.includes((row.original as MovesDetail).name)
+                    "hover:!bg-stone-200 dark:hover:!bg-stone-900 hover:cursor-pointer",
+                    selectedItem?.includes((row.original as ItemDetail).name)
                       ? "bg-gradient-to-br from-stone-700 to-stone-900 dark:from-stone-400 dark:to-stone-600 text-white"
                       : ""
                   )}
@@ -124,7 +128,7 @@ export function MoveDataTable({
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={columns.length}
+                  colSpan={ColumnsItem.length}
                   className="h-24 text-center"
                 >
                   No results.
@@ -142,6 +146,6 @@ export function MoveDataTable({
           table={table}
         />
       </div>
-    </div>
+    </motion.div>
   );
-}
+};

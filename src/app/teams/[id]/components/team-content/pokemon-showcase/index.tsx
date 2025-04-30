@@ -9,6 +9,7 @@ import { ShowcaseMenu } from "./showcase-menu";
 import { MoveList } from "./moves/move-list";
 import { useMenuContext } from "./context/menu-context";
 import { StatsModifier } from "./base-stats/stats-modifier";
+import { ItemsAbilities } from "./items-abilities";
 
 export const PokemonShowcase = () => {
   const { pokeData } = usePokeData();
@@ -29,6 +30,8 @@ export const PokemonShowcase = () => {
                   <MoveList />
                 ) : currentIndex === 1 ? (
                   <StatsModifier />
+                ) : currentIndex === 2 ? (
+                  <ItemsAbilities />
                 ) : (
                   <div></div>
                 )}

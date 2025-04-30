@@ -1,5 +1,6 @@
 import { TotalStatsChart } from "../base-stats/stats-chart";
 import { useMenuContext } from "../context/menu-context";
+import { ItemAbilitySelected } from "../items-abilities/item-ability-selected";
 import { MovesSelected } from "../moves/moves-selected";
 import { MenuCarousel } from "./menu-carousel";
 
@@ -12,6 +13,8 @@ export const ShowcaseMenu = () => {
         <MovesSelected />
       ) : currentIndex === 1 ? (
         <TotalStatsChart />
+      ) : currentIndex === 2 ? (
+        <ItemAbilitySelected />
       ) : (
         <div></div>
       )}

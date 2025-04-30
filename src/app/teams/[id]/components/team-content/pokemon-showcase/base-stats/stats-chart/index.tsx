@@ -1,3 +1,6 @@
+"use client";
+
+import { motion } from "framer-motion";
 import { useTeamContext } from "@/app/teams/[id]/context/team-context";
 import {
   ChartConfig,
@@ -9,6 +12,7 @@ import { BaseStats } from "@/types/pokemon";
 import { natureModifiers } from "@/utils/nature";
 import { roundStat } from "@/utils/round-stat";
 import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from "recharts";
+import { AnimatedNumber } from "@/utils/animate-number";
 
 export const TotalStatsChart = () => {
   const { pokemonSelected } = useTeamContext();
@@ -49,48 +53,59 @@ export const TotalStatsChart = () => {
 
   const chartConfig = {
     value: {
-      label: "value",
+      label: "Total",
       color: "oklch(58.8% 0.158 241.966)",
     },
   } satisfies ChartConfig;
 
   return (
-    <ChartContainer
-      config={chartConfig}
-      className="mx-auto aspect-square max-h-[270px] md:max-h-[253px]"
+    <motion.div
+      initial={{ opacity: 0, y: 5 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 5 }}
+      transition={{ delay: 0.3, duration: 0.3 }}
     >
-      <RadarChart data={chartData}>
-        <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-        <PolarAngleAxis
-          dataKey="stats"
-          tick={({ payload, x, y, textAnchor }) => {
-            const { value } = payload;
-            const statValue =
-              chartData.find((d) => d.stats === value)?.value ?? "";
-            return (
-              <g transform={`translate(${x},${y})`}>
-                <text
-                  textAnchor={textAnchor}
-                  dy={-4}
-                  className="fill-black dark:fill-white text-[10px]"
-                >
-                  {value}
-                </text>
-                <text
-                  textAnchor={textAnchor}
-                  dy={10}
-                  className="fill-gray-400  text-[10px]"
-                >
-                  {statValue}
-                </text>
-              </g>
-            );
-          }}
-        />
+      <ChartContainer
+        config={chartConfig}
+        className="mx-auto aspect-square max-h-[270px] md:max-h-[253px]"
+      >
+        <RadarChart data={chartData}>
+          <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+          <PolarAngleAxis
+            dataKey="stats"
+            tick={({ payload, x, y, textAnchor }) => {
+              const { value } = payload;
+              const statValue =
+                chartData.find((d) => d.stats === value)?.value ?? "";
+              return (
+                <g transform={`translate(${x},${y})`}>
+                  <text
+                    textAnchor={textAnchor}
+                    dy={-4}
+                    className="fill-black dark:fill-white text-[10px]"
+                  >
+                    {value}
+                  </text>
+                  <text
+                    textAnchor={textAnchor}
+                    dy={10}
+                    className="fill-gray-400  text-[10px]"
+                  >
+                    <AnimatedNumber
+                      value={Number(statValue)}
+                      delay={500}
+                      duration={200}
+                    />
+                  </text>
+                </g>
+              );
+            }}
+          />
 
-        <PolarGrid />
-        <Radar dataKey="value" fill="var(--color-value)" fillOpacity={0.6} />
-      </RadarChart>
-    </ChartContainer>
+          <PolarGrid />
+          <Radar dataKey="value" fill="var(--color-value)" fillOpacity={0.6} />
+        </RadarChart>
+      </ChartContainer>
+    </motion.div>
   );
 };

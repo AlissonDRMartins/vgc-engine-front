@@ -1,5 +1,7 @@
 import { apiPoke } from "@/lib/ky";
 import {
+  AllItemsApiResponse,
+  ItemApiResponse,
   MoveApiResponse,
   PokemonAbility,
   PokemonInfoApi,
@@ -36,8 +38,20 @@ export const PokeService = {
   },
 
   getMove: async (name: string) => {
-    const response = await apiPoke(`move/${name.toLocaleLowerCase()}`);
+    const response = await apiPoke(`move/${name.toLowerCase()}`);
     if (!response.ok) throw new Error("Failed to fetch Move data");
     return response.json<MoveApiResponse>();
+  },
+
+  getItemList: async () => {
+    const response = await apiPoke(`item?limit=2180`);
+    if (!response.ok) throw new Error("Failed to fetch Item list");
+    return response.json<AllItemsApiResponse>();
+  },
+
+  getItem: async (name: string) => {
+    const response = await apiPoke(`item/${name.toLowerCase()}`);
+    if (!response.ok) throw new Error("Failed to fetch Item data");
+    return response.json<ItemApiResponse>();
   },
 };
