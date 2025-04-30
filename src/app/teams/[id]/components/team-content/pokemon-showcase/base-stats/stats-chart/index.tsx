@@ -42,9 +42,9 @@ export const TotalStatsChart = () => {
     { stats: "HP", value: roundStat(hp) },
     { stats: "ATK", value: roundStat(calcOthers({ stats: "atk" })) },
     { stats: "DEF", value: roundStat(calcOthers({ stats: "def" })) },
-    { stats: "SP.ATK", value: roundStat(calcOthers({ stats: "spatk" })) },
-    { stats: "SP.DEF", value: roundStat(calcOthers({ stats: "spdef" })) },
     { stats: "SPEED", value: roundStat(calcOthers({ stats: "speed" })) },
+    { stats: "SP.DEF", value: roundStat(calcOthers({ stats: "spdef" })) },
+    { stats: "SP.ATK", value: roundStat(calcOthers({ stats: "spatk" })) },
   ];
 
   const chartConfig = {
@@ -61,7 +61,33 @@ export const TotalStatsChart = () => {
     >
       <RadarChart data={chartData}>
         <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-        <PolarAngleAxis dataKey="stats" tickSize={6} />
+        <PolarAngleAxis
+          dataKey="stats"
+          tick={({ payload, x, y, textAnchor }) => {
+            const { value } = payload;
+            const statValue =
+              chartData.find((d) => d.stats === value)?.value ?? "";
+            return (
+              <g transform={`translate(${x},${y})`}>
+                <text
+                  textAnchor={textAnchor}
+                  dy={-4}
+                  className="fill-black dark:fill-white text-[10px]"
+                >
+                  {value}
+                </text>
+                <text
+                  textAnchor={textAnchor}
+                  dy={10}
+                  className="fill-gray-400  text-[10px]"
+                >
+                  {statValue}
+                </text>
+              </g>
+            );
+          }}
+        />
+
         <PolarGrid />
         <Radar dataKey="value" fill="var(--color-value)" fillOpacity={0.6} />
       </RadarChart>

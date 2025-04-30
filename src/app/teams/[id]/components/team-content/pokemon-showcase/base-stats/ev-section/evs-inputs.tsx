@@ -3,6 +3,7 @@ import { statLabels } from "./stat-labels";
 import { Slider } from "@/components/ui/slider";
 import { Input } from "@/components/ui/input";
 import { ChangeEvent } from "react";
+import { natureModifiers } from "@/utils/nature";
 
 interface EvsInputsProps {
   pokemonSelected: PokemonInfo | null;
@@ -34,6 +35,10 @@ export const EvsInputs = ({
       handleEvChange(stat.key, Math.min(252, Math.max(0, parsed)));
     }
   };
+
+  const nature = pokemonSelected?.nature || "";
+  const statUp = nature ? natureModifiers[nature]?.up : null;
+  const statDown = nature ? natureModifiers[nature]?.down : null;
 
   return (
     <div className="flex flex-col items-start gap-2 w-full">
@@ -69,7 +74,13 @@ export const EvsInputs = ({
               />
             </div>
             <div
-              className="flex w-[20%] bg-black text-white justify-center"
+              className={`flex w-[20%] ${
+                statUp === stat.key
+                  ? "bg-gradient-to-br from-green-500 to-green-700 dark:from-green-800 dark:to-green-900"
+                  : statDown === stat.key
+                  ? "bg-gradient-to-br from-red-500 to-red-700 dark:bg-red-800 dark:to-red-900"
+                  : "bg-black"
+              } text-white justify-center`}
               style={{
                 clipPath: "polygon(0 0, 80% 0, 100% 100%, 20% 100%)",
               }}
