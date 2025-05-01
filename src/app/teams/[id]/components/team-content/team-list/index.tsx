@@ -46,7 +46,7 @@ export const TeamList = () => {
   };
 
   return (
-    <div className="w-full md:w-[30%] flex flex-col gap-2">
+    <div className="w-full md:w-[50%] lg:w-[30%] flex flex-col gap-2">
       <AddPokemon isLoading={isLoading} setIsLoading={setIsLoading} />
       <div className="flex flex-col gap-3 my-4">
         {team.members.map((pokemon, index) => (

@@ -14,7 +14,7 @@ export const PokebuilderCard = ({ children }: PropsWithChildren) => {
     >
       <div className="w-full h-full z-10">{children}</div>
       <div
-        className="absolute w-[150%] md:w-[55%] h-[370px] md:h-[320px] left-0 top-0 bg-red-900 dark:bg-red-500/30 z-0"
+        className="absolute w-[150%] lg:w-[55%] h-[370px] md:h-[320px] left-0 top-0 bg-red-900 dark:bg-red-500/30 z-0"
         style={{
           clipPath: "polygon(0 0, calc(100% - 130px) 0, 100% 100%, 0 100%)",
         }}

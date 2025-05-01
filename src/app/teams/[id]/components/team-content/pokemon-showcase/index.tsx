@@ -17,11 +17,11 @@ export const PokemonShowcase = () => {
 
   return (
     <BuilderProvider value={{ pokeData }}>
-      <div className="w-full md:w-[70%] flex items-center justify-center">
+      <div className="w-full md:w-[50%] lg:w-[70%] flex items-center justify-center">
         <AnimatePresence mode="wait">
           <PokebuilderCard>
             <div className="flex flex-col gap-2">
-              <div className="flex flex-col md:flex-row gap-2 w-full">
+              <div className="flex flex-col lg:flex-row gap-2 w-full">
                 <PokemonFrame />
                 <ShowcaseMenu />
               </div>
