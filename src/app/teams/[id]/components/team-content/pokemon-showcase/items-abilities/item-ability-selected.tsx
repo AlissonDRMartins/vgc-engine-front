@@ -1,12 +1,20 @@
+"use client";
+
+import { motion } from "framer-motion";
 import { useTeamContext } from "@/app/teams/[id]/context/team-context";
 import { ItemNameCell } from "./items-list/columns";
+import { formatApiName } from "@/utils/format";
 
 export const ItemAbilitySelected = () => {
   const { pokemonSelected } = useTeamContext();
 
   return (
     <div className="flex flex-col gap-2 mt-6 md:mt-0 md:h-[210px] justify-center items-end">
-      <div
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 10 }}
+        transition={{ delay: 0.2 }}
         className="bg-stone-200 dark:text-black flex gap-6 p-1 px-6 items-center relative overflow-hidden w-[90%] h-[40px] text-sm lg:text-base"
         style={{
           clipPath: "polygon(0 0, 100% 0, 100% 100%, 20px 100%)",
@@ -24,8 +32,12 @@ export const ItemAbilitySelected = () => {
             clipPath: "polygon(0 0, 85% 0, 100% 100%, 0 100%)",
           }}
         />
-      </div>
-      <div
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 10 }}
+        transition={{ delay: 0.4 }}
         className="bg-stone-200 dark:text-black flex gap-9 p-1 px-6 items-center relative overflow-hidden w-[85%] h-[40px] text-sm lg:text-base"
         style={{
           clipPath: "polygon(0 0, 100% 0, 100% 100%, 20px 100%)",
@@ -39,7 +51,7 @@ export const ItemAbilitySelected = () => {
             !pokemonSelected?.ability ? "text-muted-foreground" : ""
           }`}
         >
-          {pokemonSelected?.ability || "Not selected"}
+          {formatApiName(pokemonSelected?.ability || "") || "Not selected"}
         </span>
         <div
           className="absolute left-0 w-[120px] h-full bg-black"
@@ -47,7 +59,7 @@ export const ItemAbilitySelected = () => {
             clipPath: "polygon(0 0, 85% 0, 100% 100%, 0 100%)",
           }}
         />
-      </div>
+      </motion.div>
     </div>
   );
 };

@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ItemsList } from "./items-list";
+import { AbilityList } from "./ability-list";
 
 export const ItemsAbilities = () => {
   return (
@@ -28,7 +29,7 @@ export const ItemsAbilities = () => {
           value="abilities"
           className="bg-stone-200 dark:bg-stone-900 -mt-2 p-2 rounded-b-md"
         >
-          <span>abilities</span>
+          <AbilityList />
         </TabsContent>
       </Tabs>
     </motion.div>

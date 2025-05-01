@@ -1,5 +1,5 @@
 import { apiVgcEngine } from "@/lib/ky";
-import { ItemDetail, MovesDetail } from "@/types/pokemon";
+import { AbilityDetail, ItemDetail, MovesDetail } from "@/types/pokemon";
 
 export const VgcEngineService = {
   getMoveDetails: async (moveList: string[]) => {
@@ -16,5 +16,13 @@ export const VgcEngineService = {
     const response = await apiVgcEngine.get(`items`);
     if (!response) throw new Error("Failed to fetch items list");
     return response.json<{ items: ItemDetail[] }>();
+  },
+
+  getAbilities: async (abilities: { abilities: string[] }) => {
+    const response = await apiVgcEngine.post(`abilities`, {
+      json: abilities,
+    });
+    if (!response) throw new Error("Failed to fetch abilities list");
+    return response.json<{ abilities: AbilityDetail[] }>();
   },
 };

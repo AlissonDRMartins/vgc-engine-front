@@ -7,6 +7,14 @@ import { HelpCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { formatApiName } from "@/utils/format";
+import { useTeamContext } from "@/app/teams/[id]/context/team-context";
+import { ItemNameCell } from "../items-abilities/items-list/columns";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export const PokemonImage = ({
   pokemonName: name,
@@ -16,6 +24,7 @@ export const PokemonImage = ({
   const [imgSrc, setImgSrc] = useState<string | null>(null);
   const [hasError, setHasError] = useState(false);
   const { pokeData } = useBuilderContext();
+  const { pokemonSelected } = useTeamContext();
 
   useEffect(() => {
     if (name !== "Not found") {
@@ -38,7 +47,7 @@ export const PokemonImage = ({
           initial={{ opacity: 0, y: 5 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 5 }}
-          className="w-full flex justify-center items-center"
+          className="w-full flex justify-center items-center relative"
         >
           {imageSource !== "/placeholder.png" ? (
             <Image
@@ -56,6 +65,43 @@ export const PokemonImage = ({
             />
           ) : (
             <EmptyImageSkeleton />
+          )}
+          {pokemonSelected?.item && (
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              className="absolute bottom-0 w-[70px] transition-all duration-300 ease-in-out left-0 md:-left-10 hover:left-0"
+            >
+              <TooltipProvider>
+                <Tooltip delayDuration={200}>
+                  <TooltipTrigger asChild>
+                    <div
+                      className="relative w-full bg-black overflow-hidden"
+                      style={{
+                        clipPath: "polygon(0 0, 80% 0, 100% 100%, 0 100%)",
+                      }}
+                    >
+                      <ItemNameCell
+                        name={pokemonSelected.item}
+                        onlyIcon
+                        className="w-6 h-6"
+                      />
+
+                      <div
+                        className="absolute top-0 right-0 h-full bg-stone-800 w-[30px]"
+                        style={{
+                          clipPath: "polygon(0 0, 100% 0, 100% 100%, 45% 100%)",
+                        }}
+                      />
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent side="right">
+                    <span>Hold: {formatApiName(pokemonSelected.item)}</span>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </motion.div>
           )}
         </motion.div>
       ) : (

@@ -34,6 +34,18 @@ function TooltipTrigger({
   const [open, setOpen] = React.useState(false);
   const timerRef = React.useRef<NodeJS.Timeout | null>(null);
 
+  const startPressTimer = () => {
+    timerRef.current = setTimeout(() => setOpen(true), 500);
+  };
+
+  const clearPressTimer = () => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+    setOpen(false);
+  };
+
   const handleMouseDown = () =>
     (timerRef.current = setTimeout(() => setOpen(true), 500));
 
@@ -59,6 +71,9 @@ function TooltipTrigger({
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseLeave}
+      onTouchStart={startPressTimer}
+      onTouchEnd={clearPressTimer}
+      onTouchCancel={clearPressTimer}
       {...props}
       data-state={open ? "open" : "closed"}
     />

@@ -23,15 +23,15 @@ export const ItemsFilters = ({ table }: ItemsFiltersProps) => {
   ].filter((filter) => filter.value);
 
   return (
-    <div className="w-full flex justify-between items-center p-2 rounded-md border border-stone-300 dark:border-stone-700 bg-gradient-to-br from-stone-200 to-stone-300 dark:from-stone-800 dark:to-stone-900">
-      <div className="flex gap-2 items-center">
+    <div className="w-full flex flex-col md:flex-row gap-2 justify-between items-center p-2 rounded-md border border-stone-300 dark:border-stone-700 bg-gradient-to-br from-stone-200 to-stone-300 dark:from-stone-800 dark:to-stone-900">
+      <div className="flex gap-2 items-center flex-col md:flex-row w-full">
         <span className="text-muted-foreground text-sm">Filters:</span>
         <Input
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)
           }
-          className="w-[200px] h-7 bg-stone-100"
+          className="w-full md:w-[200px] h-7 bg-stone-100"
           placeholder="Item name"
         />
         <Input
@@ -39,7 +39,7 @@ export const ItemsFilters = ({ table }: ItemsFiltersProps) => {
           onChange={(event) =>
             table.getColumn("effect")?.setFilterValue(event.target.value)
           }
-          className="w-[200px] h-7 bg-stone-100"
+          className="w-full md:w-[200px] h-7 bg-stone-100"
           placeholder="Effect"
         />
       </div>

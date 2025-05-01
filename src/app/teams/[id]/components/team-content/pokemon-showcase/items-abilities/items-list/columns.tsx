@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { ItemDetail } from "@/types/pokemon";
 import { formatApiName } from "@/utils/format";
 import { removeDashes } from "@/utils/remove-dashes";
@@ -120,7 +121,15 @@ export const ColumnsItem: ColumnDef<ItemDetail>[] = [
   },
 ];
 
-export const ItemNameCell = ({ name }: { name: string }) => {
+export const ItemNameCell = ({
+  name,
+  onlyIcon,
+  className,
+}: {
+  name: string;
+  onlyIcon?: boolean;
+  className?: string;
+}) => {
   const [hasError, setHasError] = useState(false);
   const url = `https://www.serebii.net/itemdex/sprites/${removeDashes(
     name
@@ -144,14 +153,14 @@ export const ItemNameCell = ({ name }: { name: string }) => {
             width={192}
             height={192}
             unoptimized
-            className="w-8 h-8"
+            className={cn("w-8 h-8", className)}
             onError={() => setHasError(true)}
           />
         ) : (
           <HelpCircle className="w-5 h-5 text-muted-foreground" />
         )}
       </div>
-      <span>{formatApiName(name)}</span>
+      {!onlyIcon && <span>{formatApiName(name)}</span>}
     </div>
   );
 };

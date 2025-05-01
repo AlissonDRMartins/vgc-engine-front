@@ -85,4 +85,5 @@ export interface ItemDetail {
 export interface AbilityDetail {
   name: string;
   effect: string;
+  isHidden?: string;
 }
