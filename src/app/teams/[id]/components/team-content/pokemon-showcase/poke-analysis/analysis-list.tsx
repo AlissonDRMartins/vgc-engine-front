@@ -42,7 +42,10 @@ export const AnalysisList = () => {
                       <ItemNameCell name={item.name} onlyIcon />
                     </TooltipTrigger>
                     <TooltipContent>
-                      <span>{formatApiName(item.name)}</span>
+                      <div className="flex gap-1">
+                        <span>{formatApiName(item.name)}</span>
+                        <span>Usage:{` ${item.usage}`}</span>
+                      </div>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
