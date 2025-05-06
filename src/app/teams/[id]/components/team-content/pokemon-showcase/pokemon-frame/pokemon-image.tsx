@@ -30,10 +30,19 @@ export const PokemonImage = ({
 
   useEffect(() => {
     if (name !== "Not found") {
-      setImgSrc(`/gifs/${name}.gif`);
-      setHasError(false);
+      setImgSrc(`/gifs/${name}.gif?v=${Date.now()}`);
+      setHasError(false); // resetar sempre que o nome mudar
     }
   }, [name]);
+
+  // E um efeito que tenta resetar caso um gif tenha sido marcado como erro antes
+  useEffect(() => {
+    if (hasError && name) {
+      const retryImg = new window.Image();
+      retryImg.src = `/gifs/${name}.gif?retry=${Date.now()}`;
+      retryImg.onload = () => setHasError(false); // se carregar agora, resetar erro
+    }
+  }, [hasError, name]);
 
   const sprite =
     pokeData?.sprites.other["official-artwork"].front_default ??
