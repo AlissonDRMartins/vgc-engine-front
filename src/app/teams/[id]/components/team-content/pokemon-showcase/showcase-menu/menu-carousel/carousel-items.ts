@@ -1,5 +1,4 @@
 import {
-  Package,
   Star,
   Info,
   LucideIcon,
@@ -7,6 +6,7 @@ import {
   Dumbbell,
   Boxes,
   ShieldOff,
+  DraftingCompass,
 } from "lucide-react";
 
 export type CarouselItem = {
@@ -32,8 +32,8 @@ export const carouselItems: CarouselItem[] = [
     icon: ShieldOff,
   },
   {
-    name: "Item",
-    icon: Package,
+    name: "Poke Analysis",
+    icon: DraftingCompass,
   },
   {
     name: "Tera Type",

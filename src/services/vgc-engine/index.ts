@@ -1,5 +1,11 @@
 import { apiVgcEngine } from "@/lib/ky";
-import { AbilityDetail, ItemDetail, MovesDetail } from "@/types/pokemon";
+import {
+  AbilityDetail,
+  IndividualAnalysis,
+  ItemDetail,
+  MovesDetail,
+  PokemonInfo,
+} from "@/types/pokemon";
 
 export const VgcEngineService = {
   getMoveDetails: async (moveList: string[]) => {
@@ -24,5 +30,13 @@ export const VgcEngineService = {
     });
     if (!response) throw new Error("Failed to fetch abilities list");
     return response.json<{ abilities: AbilityDetail[] }>();
+  },
+
+  getIndividualAnalyze: async (pokeInfo: PokemonInfo) => {
+    const response = await apiVgcEngine.post(`analyze_pokemon`, {
+      json: pokeInfo,
+    });
+    if (!response) throw new Error("Failed to fetch individual analysis list");
+    return response.json<{ pokemon_info: IndividualAnalysis }>();
   },
 };

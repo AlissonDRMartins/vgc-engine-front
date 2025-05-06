@@ -2,6 +2,7 @@ import { TotalStatsChart } from "../base-stats/stats-chart";
 import { useMenuContext } from "../context/menu-context";
 import { ItemAbilitySelected } from "../items-abilities/item-ability-selected";
 import { MovesSelected } from "../moves/moves-selected";
+import { AnalysisList } from "../poke-analysis/analysis-list";
 import { EffectiveTypes } from "../weakness-chart/effective-types";
 import { MenuCarousel } from "./menu-carousel";
 
@@ -18,6 +19,8 @@ export const ShowcaseMenu = () => {
         <ItemAbilitySelected />
       ) : currentIndex === 3 ? (
         <EffectiveTypes />
+      ) : currentIndex === 4 ? (
+        <AnalysisList />
       ) : (
         <div></div>
       )}

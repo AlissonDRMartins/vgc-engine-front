@@ -16,7 +16,7 @@ export const PokemonName = ({ name }: PokemonNameProps) => {
   const { pokeData } = useBuilderContext();
   const { pokemonSelected, updateMember } = useTeamContext();
   const types: string[] = pokeData?.types.map((type) => type.type.name) || [];
-  const level = pokemonSelected?.lvl || 1;
+  const level = pokemonSelected?.level || 1;
 
   const [localLevel, setLocalLevel] = useState<string>(level.toString());
 
@@ -35,7 +35,7 @@ export const PokemonName = ({ name }: PokemonNameProps) => {
 
     updateMember(pokemonSelected!.indexTeam, (prev) => ({
       ...prev,
-      lvl: newLevel,
+      level: newLevel,
     }));
 
     setLocalLevel(newLevel.toString());

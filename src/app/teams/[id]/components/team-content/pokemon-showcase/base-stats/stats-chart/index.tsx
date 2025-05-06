@@ -16,7 +16,7 @@ import { AnimatedNumber } from "@/utils/animate-number";
 
 export const TotalStatsChart = () => {
   const { pokemonSelected } = useTeamContext();
-  const { baseStats, evs, ivs, lvl, nature } = pokemonSelected || {};
+  const { baseStats, evs, ivs, level: lvl, nature } = pokemonSelected || {};
 
   const hp =
     ((2 * (baseStats?.hp || 0) + (ivs?.hp || 0) + (evs?.hp || 0) / 4) *

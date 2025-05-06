@@ -54,7 +54,7 @@ export const DefaultPokemon = ({
       speed: 0,
     },
     nature: PokemonNatureEnum.hardy,
-    lvl: 50,
+    level: 50,
     item: "",
   };
 };

@@ -13,7 +13,7 @@ export type PokemonInfo = {
   types: string[];
   ability: string;
   item: string;
-  teraType?: string;
+  tera?: string;
   moves: {
     name: string;
     power: number;
@@ -25,7 +25,7 @@ export type PokemonInfo = {
   nature: PokemonNatureEnum;
   sprite?: string | null;
   indexTeam: number;
-  lvl: number;
+  level: number;
 };
 
 export type Team = {
@@ -86,4 +86,22 @@ export interface AbilityDetail {
   name: string;
   effect: string;
   isHidden?: string;
+}
+export interface IndividualAnalysis extends PokemonInfo {
+  counter_pokemons: CounterPokemon[];
+}
+
+export interface CounterPokemon {
+  name: string;
+  items: NameUsage[];
+  abilities: NameUsage[];
+  teratype: NameUsage[];
+  moves: NameUsage[];
+  usage_percent: number;
+  typing: string[];
+}
+
+export interface NameUsage {
+  name: string;
+  usage: number;
 }
