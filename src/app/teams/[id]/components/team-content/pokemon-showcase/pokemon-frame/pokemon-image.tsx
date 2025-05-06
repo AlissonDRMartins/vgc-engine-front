@@ -26,6 +26,8 @@ export const PokemonImage = ({
   const { pokeData } = useBuilderContext();
   const { pokemonSelected } = useTeamContext();
 
+  console.log("name", name);
+
   useEffect(() => {
     if (name !== "Not found") {
       setImgSrc(`/gifs/${name}.gif`);
@@ -38,6 +40,8 @@ export const PokemonImage = ({
     pokeData?.sprites.front_default;
   const fallbackImage = sprite || "/placeholder.png";
   const imageSource = imgSrc && !hasError ? imgSrc : fallbackImage;
+
+  console.log("imageSource", imageSource);
 
   return (
     <AnimatePresence mode="wait">
