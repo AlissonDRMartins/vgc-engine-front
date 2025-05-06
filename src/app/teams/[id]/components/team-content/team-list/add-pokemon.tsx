@@ -16,12 +16,13 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { PokemonInfo, PokemonNatureEnum } from "@/types/pokemon";
+import { PokemonInfo } from "@/types/pokemon";
 import { PokeService } from "@/services/poke";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { saveSelectedPokemonIndex } from "./helper/pokemon-selected";
 import { useTeamContext } from "../../../context/team-context";
+import { DefaultPokemon } from "@/utils/default-pokemon";
 
 interface AddPokemonProps {
   isLoading?: boolean;
@@ -31,7 +32,7 @@ interface AddPokemonProps {
 export const AddPokemon = ({ isLoading, setIsLoading }: AddPokemonProps) => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [pokemonList, setPokemonList] = useState<string[]>([]);
-  const { addMember, team } = useTeamContext();
+  const { addMember, team, setPokemonSelected } = useTeamContext();
 
   useEffect(() => {
     const fetchPokemonList = async () => {
@@ -61,55 +62,10 @@ export const AddPokemon = ({ isLoading, setIsLoading }: AddPokemonProps) => {
 
     const pokeInfo = await PokeService.getPokemon(pokemonName.toLowerCase());
 
-    const selectedPokemon: PokemonInfo = {
-      name: pokemonName,
-      types: pokeInfo.types.map((type) => type.type.name),
-      ability: "",
-      moves: [],
-      sprite: pokeInfo.sprites.other["official-artwork"].front_default,
-      indexTeam: team.members.length,
-      baseStats: {
-        hp:
-          pokeInfo.stats.find((status) => status.stat.name === "hp")
-            ?.base_stat || 0,
-        atk:
-          pokeInfo.stats.find((status) => status.stat.name === "attack")
-            ?.base_stat || 0,
-        def:
-          pokeInfo.stats.find((status) => status.stat.name === "defense")
-            ?.base_stat || 0,
-        spatk:
-          pokeInfo.stats.find((status) => status.stat.name === "special-attack")
-            ?.base_stat || 0,
-        spdef:
-          pokeInfo.stats.find(
-            (status) => status.stat.name === "special-defense"
-          )?.base_stat || 0,
-        speed:
-          pokeInfo.stats.find((status) => status.stat.name === "speed")
-            ?.base_stat || 0,
-      },
-      ivs: {
-        hp: 31,
-        atk: 31,
-        def: 31,
-        spatk: 31,
-        spdef: 31,
-        speed: 31,
-      },
-      evs: {
-        hp: 0,
-        atk: 0,
-        def: 0,
-        spatk: 0,
-        spdef: 0,
-        speed: 0,
-      },
-      nature: PokemonNatureEnum.hardy,
-      lvl: 50,
-    };
+    const selectedPokemon: PokemonInfo = DefaultPokemon({ pokeInfo, team });
 
     addMember(selectedPokemon);
+    setPokemonSelected(selectedPokemon);
     saveSelectedPokemonIndex(team.id, team.members.length);
 
     setIsPopoverOpen(false);

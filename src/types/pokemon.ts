@@ -12,7 +12,7 @@ export type PokemonInfo = {
   form?: string;
   types: string[];
   ability: string;
-  item?: string;
+  item: string;
   teraType?: string;
   moves: {
     name: string;

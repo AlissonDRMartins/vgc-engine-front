@@ -52,13 +52,15 @@ export const TeamList = () => {
         {team.members.map((pokemon, index) => (
           <ContextMenu key={index}>
             <ContextMenuTrigger asChild>
-              <TeamItem
-                team={team}
-                index={index}
-                pokemon={pokemon}
-                pokemonSelected={pokemonSelected}
-                setPokemonSelected={setPokemonSelected}
-              />
+              <div>
+                <TeamItem
+                  team={team}
+                  index={index}
+                  pokemon={pokemon}
+                  pokemonSelected={pokemonSelected}
+                  setPokemonSelected={setPokemonSelected}
+                />
+              </div>
             </ContextMenuTrigger>
             <ContextMenuContent className="w-64">
               <ContextMenuItem
@@ -71,6 +73,7 @@ export const TeamList = () => {
             </ContextMenuContent>
           </ContextMenu>
         ))}
+
         {isLoading && <Skeleton className="rounded-full w-full h-10" />}
       </div>
     </div>

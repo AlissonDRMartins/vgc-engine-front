@@ -64,9 +64,16 @@ export const useTeamStorage = (teamId: string) => {
 
   const addMember = (newMember: PokemonInfo) => {
     if (!team || team.members.length >= 6) return;
+
+    const updatedMembers = [...team.members, newMember].map(
+      (member, index) => ({
+        ...member,
+        indexTeam: index,
+      })
+    );
     const updated = {
       ...team,
-      members: [...team.members, newMember],
+      members: updatedMembers,
     };
     saveTeam(updated);
   };
@@ -76,7 +83,6 @@ export const useTeamStorage = (teamId: string) => {
     updater: (prev: PokemonInfo) => PokemonInfo
   ) => {
     if (!team || index < 0 || index >= team.members.length) return;
-
     const updatedMembers = [...team.members];
     const prevMember = updatedMembers[index];
     if (!prevMember) return;
@@ -84,9 +90,14 @@ export const useTeamStorage = (teamId: string) => {
     const updatedMember = updater(prevMember);
     updatedMembers[index] = updatedMember;
 
+    const membersWithIndex = updatedMembers.map((member, i) => ({
+      ...member,
+      indexTeam: i,
+    }));
+
     const updated = {
       ...team,
-      members: updatedMembers,
+      members: membersWithIndex,
     };
 
     saveTeam(updated);
@@ -94,17 +105,38 @@ export const useTeamStorage = (teamId: string) => {
     if (pokemonSelected && pokemonSelected.name === prevMember.name) {
       setPokemonSelected(updatedMember);
     }
+
+    if (pokemonSelected && pokemonSelected.name === prevMember.name) {
+      const newSelected = membersWithIndex.find(
+        (m) => m.name === pokemonSelected.name
+      );
+      setPokemonSelected(newSelected || null);
+    }
   };
 
   const removeMember = (index: number) => {
     if (!team || index < 0 || index >= team.members.length) return;
-    const updatedMembers = team.members.filter((_, i) => i !== index);
+    const updatedMembers = team.members
+      .filter((_, i) => i !== index)
+      .map((member, i) => ({
+        ...member,
+        indexTeam: i,
+      }));
 
     const updated = {
       ...team,
       members: updatedMembers,
     };
     saveTeam(updated);
+
+    if (pokemonSelected?.indexTeam === index) {
+      setPokemonSelected(updatedMembers[0] || null);
+    } else if (pokemonSelected) {
+      const newSelected = updatedMembers.find(
+        (m) => m.name === pokemonSelected.name
+      );
+      setPokemonSelected(newSelected || null);
+    }
   };
 
   const getMember = (index: number): PokemonInfo | undefined => {
