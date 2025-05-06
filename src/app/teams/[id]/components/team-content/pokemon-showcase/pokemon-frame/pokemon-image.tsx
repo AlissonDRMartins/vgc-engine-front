@@ -6,7 +6,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { HelpCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { formatApiName } from "@/utils/format";
+import { formatApiName, formatToCamelCase } from "@/utils/format";
 import { useTeamContext } from "@/app/teams/[id]/context/team-context";
 import { ItemNameCell } from "../items-abilities/items-list/columns";
 import {
@@ -28,7 +28,7 @@ export const PokemonImage = ({
 
   useEffect(() => {
     if (name !== "Not found") {
-      setImgSrc(`/gifs/${name}.gif`);
+      setImgSrc(`/gifs/${formatToCamelCase(name)}.gif`);
       setHasError(false);
     }
   }, [name]);
