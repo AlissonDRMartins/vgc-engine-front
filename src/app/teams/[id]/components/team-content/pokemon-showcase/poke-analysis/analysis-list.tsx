@@ -35,6 +35,7 @@ export const AnalysisList = () => {
               <PokemonTypeItem pokemonType={poke.typing} />
               <span>{formatApiName(poke.name)}</span>
             </div>
+
             <div className="flex gap-1 items-center h-full">
               {poke.items.slice(0, 3).map((item, index) => (
                 <TooltipProvider key={index}>
