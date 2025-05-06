@@ -12,6 +12,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Badge } from "@/components/ui/badge";
 
 export const AnalysisList = () => {
   const { analysisList, isLoading } = useAnalysisList();
@@ -42,9 +43,15 @@ export const AnalysisList = () => {
                       <ItemNameCell name={item.name} onlyIcon />
                     </TooltipTrigger>
                     <TooltipContent>
-                      <div className="flex gap-1">
-                        <span>{formatApiName(item.name)}</span>
-                        <span>Usage:{` ${item.usage}`}</span>
+                      <div className="flex gap-2 items-center">
+                        <span className="text-sm">
+                          {formatApiName(item.name)}
+                        </span>
+                        <Badge className="bg-white dark:bg-black">
+                          <span className="text-muted-foreground dark:text-white">
+                            Usage:{` ${item.usage}%`}
+                          </span>
+                        </Badge>
                       </div>
                     </TooltipContent>
                   </Tooltip>
